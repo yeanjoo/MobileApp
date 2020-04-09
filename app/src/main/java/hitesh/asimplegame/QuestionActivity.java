@@ -47,7 +47,7 @@ public class QuestionActivity extends Activity {
 
         // the three buttons,
         // the idea is to set the text of three buttons with the options from question bank
-        button1 = (Button) findViewById(R.id.button1);
+        button1 = (Button) findViewById(R.id.button1);          //정답 보기
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
 
@@ -93,7 +93,7 @@ public class QuestionActivity extends Activity {
     }
 
     public void getAnswer(String AnswerString) {
-        if (currentQ.getANSWER().equals(AnswerString)) {
+        if (currentQ.getANSWER().equals(AnswerString)) {        //정답일때
 
             // if conditions matches increase the int (score) by 1
             // and set the text of the score view
@@ -101,17 +101,17 @@ public class QuestionActivity extends Activity {
             scored.setText("Score : " + score);
         } else {
             // if unlucky start activity and finish the game
-            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);        //intent는 전달하는 수단
 
             // passing the int value
-            Bundle b = new Bundle();
+            Bundle b = new Bundle();        //bundle은 상태,값 저장
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
             startActivity(intent);
             finish();
         }
 
-        if (questionID < 20) {
+        if (questionID < 20) {          //최대 20문제인가봄
             // if questions are not over then do this
             currentQ = questionList.get(questionID);
             setQuestionView();

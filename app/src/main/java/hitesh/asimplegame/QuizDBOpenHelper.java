@@ -42,7 +42,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         // db.close();
     }
 
-    private void addQuestion() {
+    private void addQuestion() {        //왜 굳이 문제를 만들어 놓은걸까? ->이걸 랜덤으로 만들어서 단계 무제한으로 하면?
         Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
         addQuestion(q1);
         Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
