@@ -3,6 +3,7 @@ package hitesh.asimplegame;
 import android.app.Activity;
 
 public class Question extends Activity {
+
 	private int ID;
 	private String QUESTION;
 	private String OPTA;
