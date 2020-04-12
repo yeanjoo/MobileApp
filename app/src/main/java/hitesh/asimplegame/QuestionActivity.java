@@ -36,7 +36,7 @@ public class QuestionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);     //해당 layout 가져옴
 
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);  // my question bank class
         questionList = db.getAllQuestions();  // this will fetch all quetonall questions

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_math"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:onClick="math"
+        android:text="사칙연산"
+        android:textColor="#ffffff"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/btn_nonsense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:onClick="nonsense"
+        android:text="넌센스"
+        android:textColor="#ffffff"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/btn_algorithm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:onClick="algorithm"
+        android:text="알고리즘"
+        android:textColor="#ffffff"
+        android:textSize="20sp"/>
+</LinearLayout>
