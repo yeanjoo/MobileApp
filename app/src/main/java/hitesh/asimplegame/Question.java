@@ -14,7 +14,7 @@ public class Question extends Activity {
 
 	public Question() {
 		ID = 0;
-		QUESTION = "";
+		QUESTION = "";      //자바에서 String은 참조형 변수이므로 NULL값을 주면 메모리 번지를 제공하지 않음     //"" != NULL
 		OPTA = "";
 		OPTB = "";
 		OPTC = "";

@@ -88,9 +88,9 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
+    public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {      //이건 사용을 안하는데?
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUEST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUEST);      //테이블 생성을 위한 문자열 전달
         // Create tables again
         onCreate(db);
     }
@@ -98,7 +98,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     // Adding new question
     public void addQuestion(Question quest) {
         // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
         values.put(KEY_QUES, quest.getQUESTION());
         values.put(KEY_ANSWER, quest.getANSWER());
         values.put(KEY_OPTA, quest.getOPTA());
@@ -114,12 +114,12 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_QUEST;
         database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, null);       //rawQuery : 데이터베이스에 저장된 데이터를 찾아서 가져옴       //커서는 행단위 참조
         // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {     //moveToFirst : 가장 첫번째 행 선택
             do {
                 Question quest = new Question();
-                quest.setID(cursor.getInt(0));
+                quest.setID(cursor.getInt(0));      //선택된 행의 첫번째 열
                 quest.setQUESTION(cursor.getString(1));
                 quest.setANSWER(cursor.getString(2));
                 quest.setOPTA(cursor.getString(3));
@@ -127,7 +127,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 quest.setOPTC(cursor.getString(5));
 
                 quesList.add(quest);
-            } while (cursor.moveToNext());
+            } while (cursor.moveToNext());      //moveToNext : 순서상으로 다음 행 선택
         }
         // return quest list
         return quesList;
