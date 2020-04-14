@@ -1,17 +1,20 @@
 package hitesh.asimplegame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 
 public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;      //이거 바꾸니까 문제 바뀜..
     // Database Name
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
@@ -38,54 +41,106 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 + " TEXT, " + KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
                 + KEY_OPTB + " TEXT, " + KEY_OPTC + " TEXT)";
         db.execSQL(sql);
-        addQuestion();
+//        addQuestion();
+        addQuestion(1);
         // db.close();
     }
 
-    private void addQuestion() {        //왜 굳이 문제를 만들어 놓은걸까? ->이걸 랜덤으로 만들어서 단계 무제한으로 하면?
-        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
-        addQuestion(q1);
-        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
-        addQuestion(q2);
-        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
-        addQuestion(q3);
-        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
-        addQuestion(q4);
-        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
-        addQuestion(q5);
-        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
-        addQuestion(q6);
-        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
-        addQuestion(q7);
-        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
-        addQuestion(q8);
-        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
-        addQuestion(q9);
-        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
-        addQuestion(q10);
-        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
-        addQuestion(q11);
-        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
-        addQuestion(q12);
-        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
-        addQuestion(q13);
-        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
-        addQuestion(q14);
-        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
-        addQuestion(q15);
-        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
-        addQuestion(q16);
-        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
-        addQuestion(q17);
-        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
-        addQuestion(q18);
-        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
-        addQuestion(q19);
-        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
-        addQuestion(q20);
-        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
-        addQuestion(q21);
+//    private void addQuestion() {        //왜 굳이 문제를 만들어 놓은걸까? ->이걸 랜덤으로 만들어서 단계 무제한으로 하면?
+//        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
+//        addQuestion(q1);
+//        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
+//        addQuestion(q2);
+//        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
+//        addQuestion(q3);
+//        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
+//        addQuestion(q4);
+//        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
+//        addQuestion(q5);
+//        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
+//        addQuestion(q6);
+//        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
+//        addQuestion(q7);
+//        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
+//        addQuestion(q8);
+//        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
+//        addQuestion(q9);
+//        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
+//        addQuestion(q10);
+//        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
+//        addQuestion(q11);
+//        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
+//        addQuestion(q12);
+//        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
+//        addQuestion(q13);
+//        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
+//        addQuestion(q14);
+//        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
+//        addQuestion(q15);
+//        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
+//        addQuestion(q16);
+//        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
+//        addQuestion(q17);
+//        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
+//        addQuestion(q18);
+//        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
+//        addQuestion(q19);
+//        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
+//        addQuestion(q20);
+//        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
+//        addQuestion(q21);
+//    }
+
+
+
+    public void addQuestion(int level) {
+        int a;
+        int b;
+        int op;
+        int answer;
+        String quiz;
+        ArrayList ans = new ArrayList();
+
+
+
+        if (level == 1) {
+
+            for (int i = 0; i < 20; i++) {
+                answer = 0;
+                ans.removeAll(ans);
+                a = (int)(Math.random() * 10);
+                b = (int)(Math.random() * 10);
+                op = (int)(Math.random() * 2);
+
+                if (op == 0) {       //덧셈
+                    answer = a + b;
+                    ans.add(answer);
+                    ans.add((int)(Math.random()*20));
+                    ans.add((int)(Math.random()*20));
+
+                    Collections.shuffle(ans);
+
+                    quiz = String.valueOf(a) + " + " + String.valueOf(b) + " =  ?";
+                    Question question = new Question(quiz, String.valueOf(ans.get(0)), String.valueOf(ans.get(1)), String.valueOf(ans.get(2)), String.valueOf(answer));
+                    addQuestion(question);
+                }
+                if (op == 1) {       //뺄셈
+                    answer = a-b;
+                    ans.add(answer);
+                    ans.add((int)(Math.random()*10));
+                    ans.add((int)(Math.random()*10));
+
+                    Collections.shuffle(ans);
+
+                    quiz = String.valueOf(a) + " - " + String.valueOf(b) + " =  ?";
+                    Question quest = new Question(quiz, String.valueOf(ans.get(0)), String.valueOf(ans.get(1)), String.valueOf(ans.get(2)), String.valueOf(answer));
+
+                    addQuestion(quest);
+                }
+            }
+        }
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {      //이건 사용을 안하는데?

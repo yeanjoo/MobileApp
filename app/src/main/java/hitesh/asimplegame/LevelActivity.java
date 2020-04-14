@@ -7,24 +7,30 @@ import android.os.Bundle;
 import android.view.View;
 
 
-public class SelectQuestion extends Activity {
+public class LevelActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select);
+        setContentView(R.layout.activity_level);
 
     }
 
-    public void math(View o) {
-        Intent intent = new Intent(this, LevelActivity.class);
+
+    public void easy(View o) {
+        Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
+        Bundle b = new Bundle();
+        b.putInt("level", 1);
+        intent.putExtras(b);
+        startActivity(intent);
+        finish();
     }
-    public void nonsense(View o) {
+    public void medium(View o) {
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
-    public void algorithm(View o) {
+    public void hard(View o) {
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
