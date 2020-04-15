@@ -37,11 +37,12 @@ public class QuestionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);     //해당 layout 가져옴
-
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);  // my question bank class
-        questionList = db.getAllQuestions();  // this will fetch all quetonall questions
+//        String level = getIntent().getStringExtra("level");
+        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
+        int level = b.getInt("level");
+        questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
-
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
         // the textview in which the question will be displayed
 
@@ -89,6 +90,7 @@ public class QuestionActivity extends Activity {
             public void onClick(View v) {
                 getAnswer(button3.getText().toString());
             }
+
         });
     }
 
@@ -124,6 +126,7 @@ public class QuestionActivity extends Activity {
             startActivity(intent);
             finish();
         }
+
     }
 
 
