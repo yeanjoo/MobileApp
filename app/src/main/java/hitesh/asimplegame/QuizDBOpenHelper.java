@@ -17,6 +17,7 @@ import android.util.Log;
 public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "QuizDBOpenHelper";
 
+//    private static int DATABASE_RANDOM = 1;
     private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "mathsone";
@@ -33,7 +34,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase database;
 
-    int level;
+    private int level;
 
     public QuizDBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -202,14 +203,32 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
             }
         }
     }
+//    public static void setDatabaseRandoming(){
+//        if(DATABASE_RANDOM<=1){
+//            DATABASE_RANDOM=2;
+//        }
+//        else{
+//            DATABASE_RANDOM=1;
+//        }
+//    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {      //이건 사용을 안하는데?
+        setLevel(0);
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUEST);      //테이블 생성을 위한 문자열 전달
         // Create tables again
         onCreate(db);
     }
+
+//    @Override
+//    public void onDowngrade(SQLiteDatabase db, int oldV, int newV){
+//        setLevel(0);
+//        // Drop older table if existed
+//        db.execSQL("DROP TABLE IF EXISTS "  +TABLE_QUEST);
+//        // Create tables again
+//        onCreate(db);
+//    }
 
     // Adding new question
     public void addQuestion(Question quest) {
@@ -275,6 +294,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "==== File Deleted.");
             }
         }
+        setLevel(0);
 
         return quesList;
     }
