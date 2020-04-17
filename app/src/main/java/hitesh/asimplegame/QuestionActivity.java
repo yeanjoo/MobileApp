@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 public class QuestionActivity extends Activity {
     private static final String TAG = QuestionActivity.class.getSimpleName();       //getSimpleName() : 단순히 클래스 이름만을 가져옴
+    private static int level;
 
     private List<Question> questionList;
     private int score = 0;
@@ -32,6 +33,7 @@ public class QuestionActivity extends Activity {
     private TextView txtQuestion, times, scored;
     private Button button1, button2, button3;
 
+//    private int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,9 @@ public class QuestionActivity extends Activity {
         setContentView(R.layout.activity_main);     //해당 layout 가져옴
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);  // my question bank class
 //        String level = getIntent().getStringExtra("level");
-        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
-        int level = b.getInt("level");
+//        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
+//        int level = b.getInt("level");
+//        db.setLevel(level);
         questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
@@ -92,6 +95,14 @@ public class QuestionActivity extends Activity {
             }
 
         });
+    }
+
+    public static void setLevel(int lv){
+        level = lv;
+    }
+
+    public static int getLevel(){
+        return level;
     }
 
     public void getAnswer(String AnswerString) {

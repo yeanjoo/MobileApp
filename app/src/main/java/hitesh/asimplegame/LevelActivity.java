@@ -31,22 +31,28 @@ public class LevelActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Bundle b = new Bundle();
+//        QuizDBOpenHelper db = new QuizDBOpenHelper(this);
+//        Bundle b = new Bundle();
         Intent intent = new Intent(this, QuestionActivity.class);
         switch(v.getId()){
             case R.id.btn_easy:
-                b.putInt("level",1);
+                QuestionActivity.setLevel(1);
+//                b.putInt("level",1);
                 break;
             case R.id.btn_medium:
-                b.putInt("level",2);
+                QuestionActivity.setLevel(2);
+//                db.setLevel(2);
+//                b.putInt("level",2);
                 break;
             case R.id.btn_hard:
-                b.putInt("level",3);
+                QuestionActivity.setLevel(3);
+//                db.setLevel(3);
+//                b.putInt("level",3);
                 break;
             default:
                 break;
         }
-        intent.putExtras(b);
+//        intent.putExtras(b);
         startActivity(intent);
     }
 

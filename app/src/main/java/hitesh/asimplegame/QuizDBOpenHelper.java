@@ -253,6 +253,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     }
 
     public List<Question> getAllQuestions(int lv) {
+//        getLevel();
         setLevel(lv);
         List<Question> quesList = new ArrayList<Question>();
         // Select All Query
