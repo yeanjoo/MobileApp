@@ -17,7 +17,7 @@ public class SelectQuestion extends Activity {
     }
 
     public void math(View o) {
-        Intent intent = new Intent(this, QuestionActivity.class);
+        Intent intent = new Intent(this, LevelActivity.class);
         startActivity(intent);
     }
     public void nonsense(View o) {

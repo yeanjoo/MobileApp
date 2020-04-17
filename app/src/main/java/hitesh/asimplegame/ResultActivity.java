@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+//import static hitesh.asimplegame.QuizDBOpenHelper.setDatabaseRandoming;
+
 
 public class ResultActivity extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class ResultActivity extends Activity {
     }
 
     public void playagain(View o) {
+//        setDatabaseRandoming();
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
