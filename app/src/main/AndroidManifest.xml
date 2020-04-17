@@ -10,7 +10,7 @@
         <activity
             android:name=".SelectQuestion"
             android:label="@string/app_name"
-            android:screenOrientation="fullSensor">       //화면 제어
+            android:screenOrientation="fullSensor">
             <!--원래 인텐드가 있었던 곳 문제가 있을 시 다시 여기에 넣기-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
