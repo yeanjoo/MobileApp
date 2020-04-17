@@ -19,7 +19,7 @@ public class SelectQuestion extends Activity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplication(), SettingActivity.class);
+                Intent intent = new Intent(getApplication(), SettingSound.class);
                 startActivity(intent);
             }
         });

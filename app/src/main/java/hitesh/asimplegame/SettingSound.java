@@ -1,6 +1,7 @@
 package hitesh.asimplegame;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -11,40 +12,56 @@ import android.widget.Switch;
 /*처음에 볼륨키를 넣었는데 굳이 필요 없을 것 같아서 그냥 지우고 ON/OFF만 넣었습니다*/
 /*MediaPlayer는 배경음악 처리 soundPool은 효과음 처리입니다*/
 /*다른 인텐드로 MediaPlayer 객체를 넘겨야 할 것 같아요*/
-public class SettingActivity extends Activity {
+public class SettingSound extends Activity {
+
     private static MediaPlayer mp;
     Switch sound;
     Switch effect;
     int soundPlay;
     private SoundPool soundPool;
+    private SharedPreferences BackSF=null;
+    SharedPreferences.Editor BackEditor=null;
+    private SharedPreferences EffectSF=null;
+    SharedPreferences.Editor EffectEditor=null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        mp = MediaPlayer.create(this,R.raw.background);
-        mp.setLooping(true);
         sound = findViewById(R.id.swt_sound);
         effect = findViewById(R.id.swt_effect);
 
-        //deprecated 생성자 바꿈
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        BackSF = getSharedPreferences("isMute",MODE_PRIVATE);
+        EffectSF = getSharedPreferences("isMute",MODE_PRIVATE);
+        BackEditor = BackSF.edit();
+        EffectEditor = EffectSF.edit();
+
+        sound.setChecked(BackSF.getBoolean("isMute",true));
+        effect.setChecked(EffectSF.getBoolean("isMute",true));
+
+        if(mp==null){
+            mp = MediaPlayer.create(this,R.raw.background);
+            mp.setLooping(true);
+        }
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()        //deprecated 생성자 바꿈
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build();
-        soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(3).build(); //버전에 따라 다르게 빌드 해준다.
 
+        soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(1).build(); //버전에 따라 다르게 빌드 해준다.
         soundPlay = soundPool.load(this,R.raw.button,1); //음원 바꿀 것
         soundPool.play(soundPlay,1f,1f,0,0,1f);
 
         sound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //배경음악
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    mp.start();
-                } else{
+               if(isChecked){
                     mp.pause();
+                } else{
+                    mp.start();
                 }
+                BackEditor.putBoolean("isBackMute",isChecked);
+                BackEditor.commit();
             }
         });
 
@@ -56,22 +73,10 @@ public class SettingActivity extends Activity {
                 } else{
                     soundPool.setVolume(soundPlay,1,1);//max
                 }
+                EffectEditor.putBoolean("isEffectMute",isChecked);
+                EffectEditor.commit();
             }
         });
     }
 
-   /* private void setSoundPool() { //생성자 soundPool생성자가 최근에 deprecate되었기 때문에
-        if (soundPool == null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build();
-                soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
-            } else {
-                // maxStream, streamType, quality
-                soundPool = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
-            }
-        }
-    }*/
 }

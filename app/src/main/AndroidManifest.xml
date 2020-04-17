@@ -30,7 +30,7 @@
             android:label="sign_up"
             android:screenOrientation="fullSensor"/>
         <activity
-            android:name=".SettingActivity"
+            android:name=".SettingSound"
             android:label="log_in"
             android:screenOrientation="fullSensor"/>
         <activity

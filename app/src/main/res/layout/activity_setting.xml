@@ -9,7 +9,7 @@
         android:layout_width="293dp"
         android:layout_height="54dp"
         android:layout_marginTop="96dp"
-        android:text="배경음악"
+        android:text="배경음악 음소거"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:layout_width="293dp"
         android:layout_height="54dp"
         android:layout_marginTop="192dp"
-        android:text="효과음"
+        android:text="효과음 음소거"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
