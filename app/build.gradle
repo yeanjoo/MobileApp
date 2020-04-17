@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-//    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "hitesh.asimplegame"
@@ -26,6 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion = '28.0.3'
 }
 
 dependencies {

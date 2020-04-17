@@ -95,6 +95,7 @@ public class QuestionActivity extends Activity {
             }
 
         });
+
     }
 
     public static void setLevel(int lv){
