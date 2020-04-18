@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,10 +28,6 @@ public class SST extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
-        if(Build.VERSION.SDK_INT>=23){//권한 확인
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO},PERMISSION);
-        }
         textView = findViewById(R.id.stt_text);
         button = findViewById(R.id.btn_stt);
 
