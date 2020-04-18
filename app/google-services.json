@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "948370023483",
+    "firebase_url": "https://moapp-6f1c4.firebaseio.com",
+    "project_id": "moapp-6f1c4",
+    "storage_bucket": "moapp-6f1c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948370023483:android:be5881bb4f1235e373a81e",
+        "android_client_info": {
+          "package_name": "hitesh.asimplegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948370023483-2gd6u4rkugi1g9ok4r7qfooqr6fgs330.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6q37zGtUIMyrpQXheCj-LVH282UkDmcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948370023483-2gd6u4rkugi1g9ok4r7qfooqr6fgs330.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

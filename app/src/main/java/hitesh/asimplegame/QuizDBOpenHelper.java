@@ -1,18 +1,15 @@
 package hitesh.asimplegame;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "QuizDBOpenHelper";
@@ -99,7 +96,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     }*/
 
     private void addQuestion() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0;i<20; i++) {
             int questNumA = (int) (Math.random() * 10);
             int questNumB = (int) (Math.random() * 10);
             int questAnswer = 0;
