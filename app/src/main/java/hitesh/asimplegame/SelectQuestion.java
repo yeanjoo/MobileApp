@@ -36,8 +36,4 @@ public class SelectQuestion extends Activity {
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
-    //혹시나
-    public void setting(View o) {
-
-    }
 }

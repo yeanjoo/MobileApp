@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import androidx.annotation.RequiresApi;
 
 /*처음에 볼륨키를 넣었는데 굳이 필요 없을 것 같아서 그냥 지우고 ON/OFF만 넣었습니다*/
 /*MediaPlayer는 배경음악 처리 soundPool은 효과음 처리입니다*/
@@ -26,6 +29,7 @@ public class SettingSound extends Activity {
     SharedPreferences.Editor EffectEditor=null;
     private Intent intent =null;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

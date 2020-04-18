@@ -1,12 +1,16 @@
 package hitesh.asimplegame;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.Locale;
 
 public class TTS extends Activity {
@@ -15,6 +19,7 @@ public class TTS extends Activity {
     private Button button;
     private TextView textView;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//LOLLIPOP 이상의 버전은 필요함
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +29,7 @@ public class TTS extends Activity {
         initTTS();
 
         button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 String text = textView.getText().toString();
@@ -51,6 +57,8 @@ public class TTS extends Activity {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP) //LOLLIPOP 이상의 버전은 필요함으로
     private void speakTTS(final String text){
         tts.speak(text,TextToSpeech.QUEUE_FLUSH,params,text);
     }
@@ -65,6 +73,7 @@ public class TTS extends Activity {
         tts.shutdown();
         super.onDestroy();
     }
+
    /* @SuppressWarnings("deprecation")
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();
