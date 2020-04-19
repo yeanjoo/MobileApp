@@ -9,20 +9,10 @@ import android.widget.Button;
 
 
 public class SelectQuestion extends Activity {
-    Button setting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
-
-        setting = findViewById(R.id.btn_setting);
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplication(), SettingSound.class);
-                startActivity(intent);
-            }
-        });
     }
     public void math(View o) {
         Intent intent = new Intent(this, LevelActivity.class);
@@ -36,8 +26,12 @@ public class SelectQuestion extends Activity {
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
-    //혹시나
     public void setting(View o) {
-
+        Intent intent = new Intent(this, SettingSound.class);
+        startActivity(intent);
+    }
+    public void voice(View o) {
+        Intent intent = new Intent(this, QuestionVoiceActivity.class);
+        startActivity(intent);
     }
 }

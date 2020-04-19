@@ -14,8 +14,6 @@ public class LevelActivity extends Activity implements View.OnClickListener {
 
 //    int level=0;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

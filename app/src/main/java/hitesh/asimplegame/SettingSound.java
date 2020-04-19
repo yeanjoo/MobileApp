@@ -6,15 +6,18 @@ import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import androidx.annotation.RequiresApi;
+
 /*처음에 볼륨키를 넣었는데 굳이 필요 없을 것 같아서 그냥 지우고 ON/OFF만 넣었습니다*/
 /*MediaPlayer는 배경음악 처리 soundPool은 효과음 처리입니다*/
-/*다른 인텐드로 MediaPlayer 객체를 넘겨야 할 것 같아요*/
 
-public class SettingSound extends Activity {
+public class SettingSound extends Activity implements View.OnClickListener{
     private static MediaPlayer mp;
     Switch sound;
     Switch effect;
@@ -26,10 +29,12 @@ public class SettingSound extends Activity {
     SharedPreferences.Editor EffectEditor=null;
     private Intent intent =null;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        intent = new Intent(getApplicationContext(),QuestionActivity.class);
         sound = findViewById(R.id.swt_sound);
         effect = findViewById(R.id.swt_effect);
 
@@ -81,4 +86,8 @@ public class SettingSound extends Activity {
         });
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }

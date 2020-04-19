@@ -36,6 +36,10 @@
             android:label="log_in"
             android:screenOrientation="fullSensor"/>
         <activity
+            android:name=".QuestionVoiceActivity"
+            android:label="voice"
+            android:screenOrientation="fullSensor"/>
+        <activity
             android:name=".LoginActivity"
             android:label="log_in"
             android:screenOrientation="fullSensor"><!--원래는 : android:screenOrientation="portrait"-->
@@ -45,6 +49,7 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
