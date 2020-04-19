@@ -33,6 +33,8 @@ public class QuestionActivity extends Activity {
     private TextView txtQuestion, times, scored;
     private Button button1, button2, button3;
 
+    CounterClass timer = new CounterClass(60000, 1000);
+
 //    private int level;
 
     @Override
@@ -67,7 +69,7 @@ public class QuestionActivity extends Activity {
         times.setText("00:02:00");      //이건 왜 설정한거지?   //초기 설정 1분으로 되어있음
 
         // A timer of 60 seconds to play for, with an interval of 1 second (1000 milliseconds)
-        CounterClass timer = new CounterClass(60000, 1000);
+//        CounterClass timer = new CounterClass(60000, 1000);
         timer.start();
 
         // button click listeners
@@ -113,6 +115,7 @@ public class QuestionActivity extends Activity {
             score++;        //score 0인데 왜 화면에는 1로 시작?           //정답일때 스코어가 올라가는데 왜 처음이 1인가?
             scored.setText("Score : " + score);
         } else {
+            timer.cancel();
             // if unlucky start activity and finish the game
             Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);        //intent는 전달하는 수단
 
@@ -130,12 +133,14 @@ public class QuestionActivity extends Activity {
             setQuestionView();
         } else {
             // if over do this
+            timer.cancel();
             Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
             startActivity(intent);
             finish();
+
         }
 
     }
@@ -151,6 +156,12 @@ public class QuestionActivity extends Activity {
         @Override
         public void onFinish() {
             times.setText("Time is up");
+            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("score", score); // Your score
+            intent.putExtras(b); // Put your score to your next
+            startActivity(intent);
+            finish();
         }
 
         @Override
