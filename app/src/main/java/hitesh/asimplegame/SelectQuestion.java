@@ -20,7 +20,7 @@ public class SelectQuestion extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
 
-        btnLogOut = (Button) findViewById(R.id.btnLogOut);
+        btnLogOut = (Button) findViewById(R.id.btn_logout);
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

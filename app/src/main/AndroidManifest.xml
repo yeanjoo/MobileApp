@@ -35,6 +35,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SettingSound"
+            android:label="log_in"
+            android:screenOrientation="fullSensor"/>
+        <activity
+            android:name=".VoiceQuestionActivity"
+            android:label="voice"
+            android:screenOrientation="fullSensor"/>
+        <activity
             android:name=".LoginActivity"
             android:label="log_in"
             android:screenOrientation="fullSensor"/><!--원래는 : android:screenOrientation="portrait"-->

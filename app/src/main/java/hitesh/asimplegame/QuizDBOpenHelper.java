@@ -20,6 +20,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
     private static final String TABLE_QUEST = "quest";
+    private static final String TABLE_VOICE = "voicequest";
     // tasks Table Columns names
     private static final String KEY_ID = "qid";
     private static final String KEY_QUES = "question";
@@ -218,6 +219,11 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void Update(SQLiteDatabase db){
+        db.execSQL("DELETE FROM " + TABLE_VOICE);//테이블 생성을 위한 문자열 전달
+        addVoiceQuestion();
+    }
+
 //    @Override
 //    public void onDowngrade(SQLiteDatabase db, int oldV, int newV){
 //        setLevel(0);
@@ -239,6 +245,45 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         // Inserting Row
         database.insert(TABLE_QUEST, null, values);
+    }
+    private void addVoiceQuestion(){
+        VoiceQuestion v1 = new VoiceQuestion("하와이안 피자는 어디서 만들었을까요?","캐나다");
+        VoiceQuestion v2 = new VoiceQuestion("눈은 눈인데 먹을 수 없는 눈은?","함박눈");
+        VoiceQuestion v3 = new VoiceQuestion("감은 감인제 먹을 수 없는 감은?","영감");
+        VoiceQuestion v4 = new VoiceQuestion("오리가 얼면?","언덕");
+        VoiceQuestion v5 = new VoiceQuestion("전화기로 세운 건물은?","콜로세움");
+        addVoiceQuestion(v1);
+        addVoiceQuestion(v2);
+        addVoiceQuestion(v3);
+        addVoiceQuestion(v4);
+        addVoiceQuestion(v5);
+    }
+    //DB 적용
+    public void addVoiceQuestion(VoiceQuestion quest){
+        ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
+        values.put(KEY_QUES, quest.getQUESTION());
+        values.put(KEY_ANSWER, quest.getANSWER());
+        // Inserting Row
+        database.insert(TABLE_VOICE, null, values);
+    }
+
+    //voice 문제 반환 (sqlite)
+    public List<VoiceQuestion> getAllVoiceQuestions(){
+        List<VoiceQuestion> quesList = new ArrayList<VoiceQuestion>();
+        String selectQuery = "SELECT  * FROM " + TABLE_VOICE;
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                VoiceQuestion question = new VoiceQuestion();
+                question.setID(cursor.getInt(0));
+                question.setQUESTION(cursor.getString(1));
+                question.setANSWER(cursor.getString(2));
+                quesList.add(question);
+            }while (cursor.moveToNext());
+        }
+        return quesList;
     }
 
     public int getLevel(){

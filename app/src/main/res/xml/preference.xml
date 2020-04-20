@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference android:title="배경음악"
+        android:summary="배경음악을 키거나 끕니다."
+        android:key="backgroundSound"
+        android:defaultValue="true"/>
+    <SwitchPreference android:title="효과음"
+        android:summary="효과음을 키거나 끕니다."
+        android:key="effectSound"
+        android:defaultValue="true"/>
+</PreferenceScreen>

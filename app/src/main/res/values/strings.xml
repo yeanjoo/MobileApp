@@ -10,6 +10,11 @@
     <string name="prompt_password">PASSWORD</string>
     <string name="welcome_message">WELCOME!</string>
     <string name="action_submit">SUBMIT</string>
+    <string name ="action_listen">LISTEN</string>
     <string name="NULL_MESSAGE">빈칸을 채워 모두 주세요</string>
     <string name="NOT_MATCH_MESSAGE">아이디 또는 패스워드가 올바르지 않습니다.</string>
+    <string name="next">NEXT</string>
+    <string name="setting_back">배경음악 음소거</string>
+    <string name="setting_effect">효과음 음소거</string>
+    <string name="voice_example">여기에 음성이 표시됩니다!</string>
 </resources>
