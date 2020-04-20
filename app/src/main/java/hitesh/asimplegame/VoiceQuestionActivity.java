@@ -3,6 +3,7 @@ package hitesh.asimplegame;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -19,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-public class VoiceQuestionActivity extends Activity implements View.OnClickListener {
+public class VoiceQuestionActivity extends Activity  {
 
     final private String SUCCESS  ="축하합니다! 정답입니다";
     final private String FAILED ="틀렸습니다 다시 시도해보세요~";
@@ -29,6 +30,7 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
     private String answer ="";
     private int score =0; // 결과창으로 넘길 것
     private int questionID=0;
+    private int order =1;
     private List<VoiceQuestion> questionList;
     VoiceQuestion currentQ;
 
@@ -39,7 +41,6 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
     //TTS
     private final Bundle params = new Bundle();
     private TextToSpeech tts;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,6 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);
         questionList = db.getAllVoiceQuestions();  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID);
-
         //문제
         speech = SpeechRecognizer.createSpeechRecognizer(this);
         speech.setRecognitionListener(listener);
@@ -72,20 +72,22 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
 
     public void answer(View o) { // 문제 답변
         speech.startListening(intent);
-        result.setText(answer);
-
     }
 
     public void next(View o){
         if (currentQ.getANSWER().equals(answer)) score++;
 
-        title = "Question  "+(questionID+1);//타이틀 번호 설정
+        title = "Question  "+(order+questionID+1);//타이틀 번호 설정
 
         if(questionID>3){
-            Intent intent =new Intent(this,ResultActivity.class);
-            intent.putExtra("score",score);
+            Intent intent = new Intent(VoiceQuestionActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("score", score); // Your score
+            intent.putExtras(b); // Put your score to your next
             startActivity(intent);
-        }else{
+            finish();
+        }
+        if(questionID<=3){
             questionID++;//다음 문제 넘어가기
             currentQ=questionList.get(questionID);
             quetitle.setText(title);
@@ -151,7 +153,7 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
                     break;
 
                 case SpeechRecognizer.ERROR_NO_MATCH:
-                    message = "ERROR_NO_MATCH";
+                    message = "다시 말해주세요";
                     break;
 
                 case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
@@ -179,9 +181,9 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
         public void onResults(Bundle bundle) {
             ArrayList<String> res = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             answer="";//초기화
-            for (int i = 0; i < res.size(); i++) {
-                answer += res.get(i);
-            }
+//            for (int i = 0; i < res.size(); i++) {
+//                answer += res.get(i);
+//            }
             String temp = res.get(0);//결과가 붙어서 출력되서 일단 임시로 빼놓자
             result.setText(temp);
         }
@@ -227,8 +229,8 @@ public class VoiceQuestionActivity extends Activity implements View.OnClickListe
         tts.shutdown();
         super.onDestroy();
     }
-    @Override
-    public void onClick(View view) {
-    }
+//    @Override
+//    public void onClick(View view) {
+//    }
     //=====>
 }

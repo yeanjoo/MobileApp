@@ -29,7 +29,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPTB = "optb";
     private static final String KEY_OPTC = "optc";
 
-
     private SQLiteDatabase database;
 
     private int level;
@@ -41,6 +40,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {       //디비를 쓰긴함?
         database = db;
+
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_QUEST + " ( "
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
                 + " TEXT, " + KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
@@ -53,9 +53,8 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
         db.execSQL(voice_sql);
 //        addQuestion(levelActivity.getLevel());
-        addQuestion();
-        addVoiceQuestion();
-        // db.close();
+//        addQuestion();
+//        db.close();
     }
 
 /*    private void addQuestion() {
@@ -226,6 +225,10 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void Update(SQLiteDatabase db){
+        db.execSQL("DELETE FROM " + TABLE_VOICE);//테이블 생성을 위한 문자열 전달
+        addVoiceQuestion();
+    }
 //    @Override
 //    public void onDowngrade(SQLiteDatabase db, int oldV, int newV){
 //        setLevel(0);
@@ -252,11 +255,11 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     //<===========VOICE 문제 관련 DB처리 (SQLITE)======================
     //생성자
     private void addVoiceQuestion(){
-        VoiceQuestion v5 = new VoiceQuestion("역시 아이스크림은 민트초코인가","그렇다");
-        VoiceQuestion v2 = new VoiceQuestion("5 플러스 2는?","7");
-        VoiceQuestion v3 = new VoiceQuestion("2 플러스 18는?","20");
-        VoiceQuestion v4 = new VoiceQuestion("10 마이너스 3는?","7");
-        VoiceQuestion v1 = new VoiceQuestion("10 마이너스 3 플러스 3은?","10");
+        VoiceQuestion v1 = new VoiceQuestion("하와이안 피자는 어디서 만들었을까요?","캐나다");
+        VoiceQuestion v2 = new VoiceQuestion("눈은 눈인데 먹을 수 없는 눈은?","함박눈");
+        VoiceQuestion v3 = new VoiceQuestion("감은 감인제 먹을 수 없는 감은?","영감");
+        VoiceQuestion v4 = new VoiceQuestion("오리가 얼면?","언덕");
+        VoiceQuestion v5 = new VoiceQuestion("전화기로 세운 건물은?","콜로세움");
         addVoiceQuestion(v1);
         addVoiceQuestion(v2);
         addVoiceQuestion(v3);
@@ -268,7 +271,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
         values.put(KEY_QUES, quest.getQUESTION());
         values.put(KEY_ANSWER, quest.getANSWER());
-
         // Inserting Row
         database.insert(TABLE_VOICE, null, values);
     }
