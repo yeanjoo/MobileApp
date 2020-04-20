@@ -185,8 +185,8 @@ public class VoiceQuestionActivity extends Activity  {
 /*            for (int i = 0; i < res.size(); i++) {
                 answer += res.get(i);
             }*/
-            String temp = res.get(0);//결과가 붙어서 출력되서 일단 임시로 빼놓자
-            result.setText(temp);
+            answer = res.get(0);//결과가 붙어서 출력되서 일단은 앞만 인식
+            result.setText(answer);
         }
 
         @Override

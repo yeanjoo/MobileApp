@@ -52,6 +52,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         db.execSQL(sql);
         db.execSQL(voice_sql);
+        addVoiceQuestion();
 //        addQuestion(levelActivity.getLevel());
 //        addQuestion();
 //        db.close();
@@ -180,10 +181,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void Update(SQLiteDatabase db){
-        db.execSQL("DELETE FROM " + TABLE_VOICE);//테이블 생성을 위한 문자열 전달
-        addVoiceQuestion();
-    }
     // Adding new question
     public void addQuestion(Question quest) {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -234,8 +231,29 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 question.setID(cursor.getInt(0));
                 question.setQUESTION(cursor.getString(1));
                 question.setANSWER(cursor.getString(2));
+
                 quesList.add(question);
             }while (cursor.moveToNext());
+        }
+        String databasePath = "/data/user/0/hitesh.asimplegame/databases";
+        File mFile = new File(databasePath);
+        if (mFile.exists()) {
+            if (mFile.isDirectory()) {
+                File[] files = mFile.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].delete()) {
+                        Log.d(TAG, "==== Foldering File Deleted.");
+                    } else {
+                        Log.d(TAG, "==== Foldering File Not Deleted.");
+                    }
+                }
+            }
+
+            if (mFile.delete()) {
+                Log.d(TAG, "==== File Deleted.");
+            } else {
+                Log.d(TAG, "==== File Deleted.");
+            }
         }
         return quesList;
     }
