@@ -45,4 +45,12 @@ public class SelectQuestion extends Activity {
         Intent intent = new Intent(this, QuestionActivity.class);
         startActivity(intent);
     }
+    public void setting(View o) {
+        Intent intent = new Intent(this, SettingSound.class);
+        startActivity(intent);
+    }
+    public void voice(View o) {
+        Intent intent = new Intent(this, VoiceQuestionActivity.class);
+        startActivity(intent);
+    }
 }

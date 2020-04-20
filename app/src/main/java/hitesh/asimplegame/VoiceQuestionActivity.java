@@ -22,8 +22,9 @@ import java.util.List;
 import java.util.Locale;
 public class VoiceQuestionActivity extends Activity  {
 
-    final private String SUCCESS  ="축하합니다! 정답입니다";
-    final private String FAILED ="틀렸습니다 다시 시도해보세요~";
+//    final private String SUCCESS  ="축하합니다! 정답입니다";
+//    final private String FAILED ="틀렸습니다 다시 시도해보세요~";
+    final private int MAX = 4;
 
     private TextView result,quetitle;
     private String title="Question";
@@ -79,7 +80,7 @@ public class VoiceQuestionActivity extends Activity  {
 
         title = "Question  "+(order+questionID+1);//타이틀 번호 설정
 
-        if(questionID>3){
+        if(questionID>=MAX){
             Intent intent = new Intent(VoiceQuestionActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
@@ -87,7 +88,7 @@ public class VoiceQuestionActivity extends Activity  {
             startActivity(intent);
             finish();
         }
-        if(questionID<=3){
+        if(questionID<MAX){
             questionID++;//다음 문제 넘어가기
             currentQ=questionList.get(questionID);
             quetitle.setText(title);
@@ -181,9 +182,9 @@ public class VoiceQuestionActivity extends Activity  {
         public void onResults(Bundle bundle) {
             ArrayList<String> res = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             answer="";//초기화
-//            for (int i = 0; i < res.size(); i++) {
-//                answer += res.get(i);
-//            }
+/*            for (int i = 0; i < res.size(); i++) {
+                answer += res.get(i);
+            }*/
             String temp = res.get(0);//결과가 붙어서 출력되서 일단 임시로 빼놓자
             result.setText(temp);
         }

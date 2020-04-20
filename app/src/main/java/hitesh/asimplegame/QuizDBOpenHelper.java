@@ -57,51 +57,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 //        db.close();
     }
 
-/*    private void addQuestion() {
-        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
-        addQuestion(q1);
-        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
-        addQuestion(q2);
-        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
-        addQuestion(q3);
-        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
-        addQuestion(q4);
-        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
-        addQuestion(q5);
-        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
-        addQuestion(q6);
-        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
-        addQuestion(q7);
-        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
-        addQuestion(q8);
-        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
-        addQuestion(q9);
-        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
-        addQuestion(q10);
-        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
-        addQuestion(q11);
-        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
-        addQuestion(q12);
-        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
-        addQuestion(q13);
-        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
-        addQuestion(q14);
-        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
-        addQuestion(q15);
-        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
-        addQuestion(q16);
-        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
-        addQuestion(q17);
-        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
-        addQuestion(q18);
-        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
-        addQuestion(q19);
-        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
-        addQuestion(q20);
-        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
-        addQuestion(q21);
-    }*/
-
     private void addQuestion() {
         for (int i = 0;i<20; i++) {
             int questNumA = (int) (Math.random() * 10);
@@ -229,15 +184,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_VOICE);//테이블 생성을 위한 문자열 전달
         addVoiceQuestion();
     }
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldV, int newV){
-//        setLevel(0);
-//        // Drop older table if existed
-//        db.execSQL("DROP TABLE IF EXISTS "  +TABLE_QUEST);
-//        // Create tables again
-//        onCreate(db);
-//    }
-
     // Adding new question
     public void addQuestion(Question quest) {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -351,6 +297,51 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         return quesList;
     }
+    /*    private void addQuestion() {
+        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
+        addQuestion(q1);
+        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
+        addQuestion(q2);
+        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
+        addQuestion(q3);
+        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
+        addQuestion(q4);
+        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
+        addQuestion(q5);
+        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
+        addQuestion(q6);
+        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
+        addQuestion(q7);
+        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
+        addQuestion(q8);
+        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
+        addQuestion(q9);
+        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
+        addQuestion(q10);
+        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
+        addQuestion(q11);
+        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
+        addQuestion(q12);
+        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
+        addQuestion(q13);
+        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
+        addQuestion(q14);
+        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
+        addQuestion(q15);
+        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
+        addQuestion(q16);
+        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
+        addQuestion(q17);
+        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
+        addQuestion(q18);
+        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
+        addQuestion(q19);
+        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
+        addQuestion(q20);
+        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
+        addQuestion(q21);
+    }*/
+
 
 
 }
