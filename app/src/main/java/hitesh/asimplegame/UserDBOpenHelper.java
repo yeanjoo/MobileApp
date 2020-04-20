@@ -80,10 +80,5 @@ public class UserDBOpenHelper extends SQLiteOpenHelper {
         else return false;
     }
     //DB열고 닫기 메모리 누수 방지
-    public void openDB(){
 
-    }
-    public void closeDB(){
-
-    }
 }

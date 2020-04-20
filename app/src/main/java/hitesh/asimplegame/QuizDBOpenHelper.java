@@ -20,6 +20,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
     private static final String TABLE_QUEST = "quest";
+    private static final String TABLE_VOICE = "voicequest";
     // tasks Table Columns names
     private static final String KEY_ID = "qid";
     private static final String KEY_QUES = "question";
@@ -44,9 +45,16 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
                 + " TEXT, " + KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
                 + KEY_OPTB + " TEXT, " + KEY_OPTC + " TEXT)";
+
+        String voice_sql ="CREATE TABLE IF NOT EXISTS " + TABLE_VOICE + " ( "
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
+                + " TEXT, " + KEY_ANSWER + " TEXT )";
+
         db.execSQL(sql);
+        db.execSQL(voice_sql);
 //        addQuestion(levelActivity.getLevel());
         addQuestion();
+        addVoiceQuestion();
         // db.close();
     }
 
@@ -241,6 +249,50 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         database.insert(TABLE_QUEST, null, values);
     }
 
+    //<===========VOICE 문제 관련 DB처리 (SQLITE)======================
+    //생성자
+    private void addVoiceQuestion(){
+        VoiceQuestion v5 = new VoiceQuestion("역시 아이스크림은 민트초코인가","그렇다");
+        VoiceQuestion v2 = new VoiceQuestion("5 플러스 2는?","7");
+        VoiceQuestion v3 = new VoiceQuestion("2 플러스 18는?","20");
+        VoiceQuestion v4 = new VoiceQuestion("10 마이너스 3는?","7");
+        VoiceQuestion v1 = new VoiceQuestion("10 마이너스 3 플러스 3은?","10");
+        addVoiceQuestion(v1);
+        addVoiceQuestion(v2);
+        addVoiceQuestion(v3);
+        addVoiceQuestion(v4);
+        addVoiceQuestion(v5);
+    }
+    //DB 적용
+    public void addVoiceQuestion(VoiceQuestion quest){
+        ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
+        values.put(KEY_QUES, quest.getQUESTION());
+        values.put(KEY_ANSWER, quest.getANSWER());
+
+        // Inserting Row
+        database.insert(TABLE_VOICE, null, values);
+    }
+
+    //voice 문제 반환 (sqlite)
+    public List<VoiceQuestion> getAllVoiceQuestions(){
+        List<VoiceQuestion> quesList = new ArrayList<VoiceQuestion>();
+        String selectQuery = "SELECT  * FROM " + TABLE_VOICE;
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                VoiceQuestion question = new VoiceQuestion();
+                question.setID(cursor.getInt(0));
+                question.setQUESTION(cursor.getString(1));
+                question.setANSWER(cursor.getString(2));
+                quesList.add(question);
+            }while (cursor.moveToNext());
+        }
+        return quesList;
+    }
+//=========================================================>
+
     public int getLevel(){
         return level;
     }
@@ -248,6 +300,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     public void setLevel(int lv){
         level = lv;
     }
+
 
     public List<Question> getAllQuestions(int lv) {
 //        getLevel();

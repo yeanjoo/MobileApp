@@ -1,5 +1,6 @@
 package hitesh.asimplegame;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -10,47 +11,56 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
-import java.util.ArrayList;
-import java.util.Locale;
+import androidx.core.app.ActivityCompat;
 
-public class QuestionVoiceActivity extends Activity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+public class VoiceQuestionActivity extends Activity implements View.OnClickListener {
 
     final private String SUCCESS  ="축하합니다! 정답입니다";
     final private String FAILED ="틀렸습니다 다시 시도해보세요~";
 
-    private EditText answer1;
-    private TextView question1;
-    private TextView result;
-    private Button btn_ans1;
-    private Button btn_que1;
-    private Button btn_ans2;
-    private String que1;
-    private String Message=null;
+    private TextView result,quetitle;
+    private String title="Question";
+    private String answer ="";
+    private int score =0; // 결과창으로 넘길 것
+    private int questionID=0;
+    private List<VoiceQuestion> questionList;
+    VoiceQuestion currentQ;
+
     //STT
     Intent intent;
     SpeechRecognizer speech;
-   // final int PERMISSION =1;
+    final int PERMISSION =1;
     //TTS
     private final Bundle params = new Bundle();
     private TextToSpeech tts;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        //builder
-        result = findViewById(R.id.result);
-        answer1 = findViewById(R.id.text_question1);
-        question1= findViewById(R.id.text1);
-        btn_ans1= findViewById(R.id.btn_ans1);
-        btn_que1= findViewById(R.id.btn_que1);
-        btn_ans2= findViewById(R.id.btn_ans2);
-        que1=question1.getText().toString();
-//<=============
+        setContentView(R.layout.activity_voice);
+
+        //permission check
+        if ( Build.VERSION.SDK_INT >= 23 ){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
+                    Manifest.permission.RECORD_AUDIO},PERMISSION);
+        }
+        //TITLE
+        result = findViewById(R.id.stt_result);
+        quetitle = findViewById(R.id.title);
+        //information.setText(information+String.valueOf(questionID+1));
+
+        //DB
+        QuizDBOpenHelper db = new QuizDBOpenHelper(this);
+        questionList = db.getAllVoiceQuestions();  // this will fetch all quetonall questions
+        currentQ = questionList.get(questionID);
+
+        //문제
         speech = SpeechRecognizer.createSpeechRecognizer(this);
         speech.setRecognitionListener(listener);
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -58,46 +68,40 @@ public class QuestionVoiceActivity extends Activity implements View.OnClickListe
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         initTTS();
+    }
 
-        //받아쓰기
-        btn_que1.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View view) {
-                speakTTS(que1);
-            }
-        });
-        btn_ans1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(que1.equals(answer1.getText().toString())){
-                    result.setText(SUCCESS);
-                }else{
-                    result.setText(FAILED);
-                }
-            }
-        });
-        //말해서 답변
-        btn_ans2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                speech.startListening(intent);
-                if(Message=="이"||Message=="2"||Message=="이 입니다"){
-                    result.setText(SUCCESS);
-                }else{
-                    result.setText(FAILED);
-                }
-            }
-        });
+    public void answer(View o) { // 문제 답변
+        speech.startListening(intent);
+        result.setText(answer);
 
     }
 
+    public void next(View o){
+        if (currentQ.getANSWER().equals(answer)) score++;
+
+        title = "Question  "+(questionID+1);//타이틀 번호 설정
+
+        if(questionID>3){
+            Intent intent =new Intent(this,ResultActivity.class);
+            intent.putExtra("score",score);
+            startActivity(intent);
+        }else{
+            questionID++;//다음 문제 넘어가기
+            currentQ=questionList.get(questionID);
+            quetitle.setText(title);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void question(View o) { // 문제 출력
+        speakTTS(currentQ.getQUESTION());
+    }
+
     //<============STT result : message, voice -> text
-    private RecognitionListener listener = new RecognitionListener() {
+    private final RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
-            Toast.makeText(getApplicationContext(),"음성 인식 시작합니다",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "음성 인식 시작합니다", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -117,7 +121,7 @@ public class QuestionVoiceActivity extends Activity implements View.OnClickListe
 
         @Override
         public void onEndOfSpeech() {
-
+            Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -168,18 +172,18 @@ public class QuestionVoiceActivity extends Activity implements View.OnClickListe
             }
 
             Log.e("GoogleActivity", "SPEECH ERROR : " + message);
-            Toast.makeText(getApplicationContext(),"ERROR : "+message,Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getApplicationContext(), "ERROR : " + message, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onResults(Bundle bundle) {
-            ArrayList<String> result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
-            for (int i=0;i<result.size();i++){
-                Message+=result.get(i);
+            ArrayList<String> res = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            answer="";//초기화
+            for (int i = 0; i < res.size(); i++) {
+                answer += res.get(i);
             }
-            //textView.setText(Message);
+            String temp = res.get(0);//결과가 붙어서 출력되서 일단 임시로 빼놓자
+            result.setText(temp);
         }
 
         @Override
@@ -223,7 +227,6 @@ public class QuestionVoiceActivity extends Activity implements View.OnClickListe
         tts.shutdown();
         super.onDestroy();
     }
-
     @Override
     public void onClick(View view) {
     }

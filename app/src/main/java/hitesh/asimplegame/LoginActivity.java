@@ -30,22 +30,7 @@ public class LoginActivity extends Activity {
         PW= (EditText)findViewById(R.id.password);
         SIGNUP.setEnabled(true);
         LOGIN.setEnabled(true);
-        SIGNUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(getApplicationContext(), SignUpActivity.class);//다음페이지
-                startActivity(intent);
-            }
-        });
 
-        LOGIN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                id = ID.getText().toString();
-                pw = PW.getText().toString();
-                check();
-            }
-        });
     }
     public void check(){
         if(id.isEmpty()||pw.isEmpty()){
@@ -60,5 +45,14 @@ public class LoginActivity extends Activity {
             Toast myToast = Toast.makeText(getApplicationContext(), R.string.NOT_MATCH_MESSAGE,Toast.LENGTH_SHORT);
             myToast.show();
         }
+    }
+    public void singup(){
+        intent = new Intent(getApplicationContext(), SignUpActivity.class);//다음페이지
+        startActivity(intent);
+    }
+    public void login(){
+        id = ID.getText().toString();
+        pw = PW.getText().toString();
+        check();
     }
 }

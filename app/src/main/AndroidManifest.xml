@@ -36,7 +36,7 @@
             android:label="log_in"
             android:screenOrientation="fullSensor"/>
         <activity
-            android:name=".QuestionVoiceActivity"
+            android:name=".VoiceQuestionActivity"
             android:label="voice"
             android:screenOrientation="fullSensor"/>
         <activity
