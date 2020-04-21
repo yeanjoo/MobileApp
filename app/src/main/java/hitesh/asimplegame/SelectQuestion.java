@@ -46,7 +46,7 @@ public class SelectQuestion extends Activity {
         startActivity(intent);
     }
     public void setting(View o) {
-        Intent intent = new Intent(this, SettingSound.class);
+        Intent intent = new Intent(this, SoundMusicManager.class);
         startActivity(intent);
     }
     public void voice(View o) {
