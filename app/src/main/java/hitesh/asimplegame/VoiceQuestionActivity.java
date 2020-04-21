@@ -41,7 +41,8 @@ public class VoiceQuestionActivity extends Activity  {
     VoiceQuestion currentQ;
     //효과음
     private SoundPool soundPool;
-    SoundManager soundManager;
+    int soundID;
+    int vol =1;//볼륨 추후 수정
     //STT
     Intent intent;
     SpeechRecognizer speech;
@@ -54,6 +55,7 @@ public class VoiceQuestionActivity extends Activity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
+
         //permission check
         if ( Build.VERSION.SDK_INT >= 23 ){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
@@ -64,8 +66,7 @@ public class VoiceQuestionActivity extends Activity  {
         quetitle = findViewById(R.id.title);
         //효과음
         soundPool = new SoundPool.Builder().build();
-        soundManager = new SoundManager(this,soundPool);
-        soundManager.addSound(0,R.raw.button);
+        soundID = soundPool.load(this,R.raw.button,1);
         //Bundle b = getIntent().getExtras();//getExtras() : 다른 activity에 데이터 전달
         //int vol = b.getInt("volume");
         //soundManager.setVolume(vol);
@@ -85,12 +86,13 @@ public class VoiceQuestionActivity extends Activity  {
     }
 
     public void answer(View o) { // 문제 답변
-        soundManager.playSound(0);
+        soundPool.play(soundID,vol,vol,0,0,0);
         speech.startListening(intent);
     }
 
     public void next(View o){
-        soundManager.playSound(0);
+        soundPool.play(soundID,vol,vol,0,0,0);
+
         if (currentQ.getANSWER().equals(answer)) score++;
 
         title = "Question  "+(order+questionID+1);//타이틀 번호 설정
@@ -111,7 +113,7 @@ public class VoiceQuestionActivity extends Activity  {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void question(View o) { // 문제 출력
-        soundManager.playSound(0);
+        soundPool.play(soundID,vol,vol,0,0,0);
         speakTTS(currentQ.getQUESTION());
     }
 

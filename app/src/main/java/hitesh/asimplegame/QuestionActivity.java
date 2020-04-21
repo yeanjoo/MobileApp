@@ -33,8 +33,8 @@ public class QuestionActivity extends Activity {
     private int questionID = 0;
     //효과음
     private SoundPool soundPool;
-    SoundManager soundManager;
-    private int index =0;
+    private int soundID;
+    private int vol=1;//볼륨, 추후 수정
 
     private Question currentQ;
     private TextView txtQuestion, times, scored;
@@ -54,8 +54,7 @@ public class QuestionActivity extends Activity {
 //        db.setLevel(level);
         //=========================효과음============================//
         soundPool = new SoundPool.Builder().build();
-        soundManager = new SoundManager(this,soundPool);
-        soundManager.addSound(0,R.raw.button);
+        soundID = soundPool.load(this,R.raw.button,1);
         //=========================================================//
         questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
@@ -87,7 +86,7 @@ public class QuestionActivity extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                soundManager.playSound(index);//효과음 재생
+                soundPool.play(soundID,vol,vol,0,0,0);//효과음 재생
                 // passing the button text to other method
                 // to check whether the anser is correct or not
                 // same for all three buttons
@@ -98,7 +97,7 @@ public class QuestionActivity extends Activity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                soundManager.playSound(index);//효과음 재생
+                soundPool.play(soundID,vol,vol,0,0,0);
                 getAnswer(button2.getText().toString());
             }
         });
@@ -106,7 +105,7 @@ public class QuestionActivity extends Activity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                soundManager.playSound(index);//효과음 재생
+                soundPool.play(soundID,vol,vol,0,0,0);
                 getAnswer(button3.getText().toString());
             }
 
