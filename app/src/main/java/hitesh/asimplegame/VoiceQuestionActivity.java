@@ -3,6 +3,7 @@ package hitesh.asimplegame;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
@@ -42,7 +43,9 @@ public class VoiceQuestionActivity extends Activity  {
     //효과음
     private SoundPool soundPool;
     int soundID;
-    int vol =1;//볼륨 추후 수정
+    int vol =1;
+    //setting
+    private SharedPreferences sf;
     //STT
     Intent intent;
     SpeechRecognizer speech;
@@ -61,15 +64,15 @@ public class VoiceQuestionActivity extends Activity  {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
                     Manifest.permission.RECORD_AUDIO},PERMISSION);
         }
+        //setting
+        SharedPreferences sf = getSharedPreferences("settings",MODE_PRIVATE);
+        vol = sf.getInt("effect",1);
         //TITLE
         result = findViewById(R.id.stt_result);
         quetitle = findViewById(R.id.title);
         //효과음
         soundPool = new SoundPool.Builder().build();
         soundID = soundPool.load(this,R.raw.button,1);
-        //Bundle b = getIntent().getExtras();//getExtras() : 다른 activity에 데이터 전달
-        //int vol = b.getInt("volume");
-        //soundManager.setVolume(vol);
 
         //DB
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);
