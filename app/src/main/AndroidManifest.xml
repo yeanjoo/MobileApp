@@ -30,7 +30,7 @@
             android:screenOrientation="fullSensor">
         </activity>
         <activity
-            android:name=".SoundMusicManager"
+            android:name=".Settings"
             android:label="log_in"
             android:screenOrientation="fullSensor"/>
         <activity
