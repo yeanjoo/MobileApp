@@ -14,13 +14,14 @@ import java.util.List;
 public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "QuizDBOpenHelper";
 
-//    private static int DATABASE_RANDOM = 1;
+    //private static int DATABASE_RANDOM = 1;
     private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
     private static final String TABLE_QUEST = "quest";
     private static final String TABLE_VOICE = "voicequest";
+
     // tasks Table Columns names
     private static final String KEY_ID = "qid";
     private static final String KEY_QUES = "question";
@@ -28,7 +29,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPTA = "opta";
     private static final String KEY_OPTB = "optb";
     private static final String KEY_OPTC = "optc";
-
 
     private SQLiteDatabase database;
 
@@ -41,60 +41,23 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {       //디비를 쓰긴함?
         database = db;
+
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_QUEST + " ( "
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
                 + " TEXT, " + KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
                 + KEY_OPTB + " TEXT, " + KEY_OPTC + " TEXT)";
+
+        String voice_sql ="CREATE TABLE IF NOT EXISTS " + TABLE_VOICE + " ( "
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
+                + " TEXT, " + KEY_ANSWER + " TEXT )";
+
         db.execSQL(sql);
+        db.execSQL(voice_sql);
+        addVoiceQuestion();
 //        addQuestion(levelActivity.getLevel());
         addQuestion();
-        // db.close();
+//        db.close();
     }
-
-/*    private void addQuestion() {
-        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
-        addQuestion(q1);
-        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
-        addQuestion(q2);
-        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
-        addQuestion(q3);
-        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
-        addQuestion(q4);
-        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
-        addQuestion(q5);
-        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
-        addQuestion(q6);
-        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
-        addQuestion(q7);
-        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
-        addQuestion(q8);
-        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
-        addQuestion(q9);
-        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
-        addQuestion(q10);
-        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
-        addQuestion(q11);
-        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
-        addQuestion(q12);
-        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
-        addQuestion(q13);
-        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
-        addQuestion(q14);
-        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
-        addQuestion(q15);
-        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
-        addQuestion(q16);
-        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
-        addQuestion(q17);
-        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
-        addQuestion(q18);
-        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
-        addQuestion(q19);
-        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
-        addQuestion(q20);
-        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
-        addQuestion(q21);
-    }*/
 
     private void addQuestion() {
         for (int i = 0;i<20; i++) {
@@ -219,20 +182,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void Update(SQLiteDatabase db){
-        db.execSQL("DELETE FROM " + TABLE_VOICE);//테이블 생성을 위한 문자열 전달
-        addVoiceQuestion();
-    }
-
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldV, int newV){
-//        setLevel(0);
-//        // Drop older table if existed
-//        db.execSQL("DROP TABLE IF EXISTS "  +TABLE_QUEST);
-//        // Create tables again
-//        onCreate(db);
-//    }
-
     // Adding new question
     public void addQuestion(Question quest) {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -246,6 +195,9 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         // Inserting Row
         database.insert(TABLE_QUEST, null, values);
     }
+
+    //<===========VOICE 문제 관련 DB처리 (SQLITE)======================
+    //생성자
     private void addVoiceQuestion(){
         VoiceQuestion v1 = new VoiceQuestion("하와이안 피자는 어디서 만들었을까요?","캐나다");
         VoiceQuestion v2 = new VoiceQuestion("눈은 눈인데 먹을 수 없는 눈은?","함박눈");
@@ -280,11 +232,33 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 question.setID(cursor.getInt(0));
                 question.setQUESTION(cursor.getString(1));
                 question.setANSWER(cursor.getString(2));
+
                 quesList.add(question);
             }while (cursor.moveToNext());
         }
+        String databasePath = "/data/user/0/hitesh.asimplegame/databases";
+        File mFile = new File(databasePath);
+        if (mFile.exists()) {
+            if (mFile.isDirectory()) {
+                File[] files = mFile.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].delete()) {
+                        Log.d(TAG, "==== Foldering File Deleted.");
+                    } else {
+                        Log.d(TAG, "==== Foldering File Not Deleted.");
+                    }
+                }
+            }
+
+            if (mFile.delete()) {
+                Log.d(TAG, "==== File Deleted.");
+            } else {
+                Log.d(TAG, "==== File Deleted.");
+            }
+        }
         return quesList;
     }
+//=========================================================>
 
     public int getLevel(){
         return level;
@@ -293,6 +267,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     public void setLevel(int lv){
         level = lv;
     }
+
 
     public List<Question> getAllQuestions(int lv) {
 //        getLevel();
@@ -341,6 +316,51 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         return quesList;
     }
+    /*    private void addQuestion() {
+        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
+        addQuestion(q1);
+        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
+        addQuestion(q2);
+        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
+        addQuestion(q3);
+        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
+        addQuestion(q4);
+        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
+        addQuestion(q5);
+        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
+        addQuestion(q6);
+        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
+        addQuestion(q7);
+        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
+        addQuestion(q8);
+        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
+        addQuestion(q9);
+        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
+        addQuestion(q10);
+        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
+        addQuestion(q11);
+        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
+        addQuestion(q12);
+        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
+        addQuestion(q13);
+        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
+        addQuestion(q14);
+        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
+        addQuestion(q15);
+        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
+        addQuestion(q16);
+        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
+        addQuestion(q17);
+        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
+        addQuestion(q18);
+        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
+        addQuestion(q19);
+        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
+        addQuestion(q20);
+        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
+        addQuestion(q21);
+    }*/
+
 
 
 }

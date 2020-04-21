@@ -4,7 +4,6 @@ package hitesh.asimplegame;
  * Created by H on 7/12/2015.
  */
 
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -12,6 +11,8 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,7 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 
 public class QuestionActivity extends Activity {
     private static final String TAG = QuestionActivity.class.getSimpleName();       //getSimpleName() : 단순히 클래스 이름만을 가져옴
@@ -28,15 +31,22 @@ public class QuestionActivity extends Activity {
     private List<Question> questionList;
     private int score = 0;
     private int questionID = 0;
-
+    //효과음
+    private SoundPool soundPool;
+    private int soundID;
+    private int vol;//볼륨, 추후 수정
+    //setting
+    private SharedPreferences sf;
     private Question currentQ;
-    private TextView txtQuestion, times, scored;
+    private TextView txtQuestion, times, scored,chance;
     private Button button1, button2, button3;
-
-    CounterClass timer = new CounterClass(60000, 1000);
+    //목숨기능
+    int life;
 
 //    private int level;
+CounterClass timer = new CounterClass(60000, 1000);
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +56,12 @@ public class QuestionActivity extends Activity {
 //        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
 //        int level = b.getInt("level");
 //        db.setLevel(level);
+
+
+        //=========================효과음============================//
+        soundPool = new SoundPool.Builder().build();
+        soundID = soundPool.load(this,R.raw.button,1);
+
         questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
@@ -56,7 +72,13 @@ public class QuestionActivity extends Activity {
         button1 = (Button) findViewById(R.id.button1);          //정답 보기
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
-
+        //========================세팅 값============================//
+        sf = getSharedPreferences("settings",MODE_PRIVATE);
+        vol = sf.getInt("effect",1);
+        life = sf.getInt("lifeMode",1);
+        chance = findViewById(R.id.chance);
+        if(life==1) chance.setText(" "); // 적용
+        Toast.makeText(getApplicationContext(), "vol : " + vol, Toast.LENGTH_SHORT).show();
         // the textview in which score will be displayed
         scored = (TextView) findViewById(R.id.score);
 
@@ -69,13 +91,15 @@ public class QuestionActivity extends Activity {
         times.setText("00:02:00");      //이건 왜 설정한거지?   //초기 설정 1분으로 되어있음
 
         // A timer of 60 seconds to play for, with an interval of 1 second (1000 milliseconds)
-//        CounterClass timer = new CounterClass(60000, 1000);
         timer.start();
 
         // button click listeners
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                soundPool.play(soundID,vol,vol,0,0,0);//효과음 재생
+                Toast.makeText(getApplicationContext(), "vol : " + vol, Toast.LENGTH_SHORT).show();
                 // passing the button text to other method
                 // to check whether the anser is correct or not
                 // same for all three buttons
@@ -86,6 +110,7 @@ public class QuestionActivity extends Activity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundPool.play(soundID,vol,vol,0,0,0);
                 getAnswer(button2.getText().toString());
             }
         });
@@ -93,10 +118,12 @@ public class QuestionActivity extends Activity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundPool.play(soundID,vol,vol,0,0,0);
                 getAnswer(button3.getText().toString());
             }
 
         });
+
     }
 
     public static void setLevel(int lv){
@@ -115,16 +142,20 @@ public class QuestionActivity extends Activity {
             score++;        //score 0인데 왜 화면에는 1로 시작?           //정답일때 스코어가 올라가는데 왜 처음이 1인가?
             scored.setText("Score : " + score);
         } else {
-            timer.cancel();
-            // if unlucky start activity and finish the game
-            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);        //intent는 전달하는 수단
-
-            // passing the int value
-            Bundle b = new Bundle();        //bundle은 상태,값 저장
-            b.putInt("score", score); // Your score     //"score"라는 키에 변수 score값 저장
-            intent.putExtras(b); // Put your score to your next
-            startActivity(intent);
-            finish();
+            if(life==1){
+                // if unlucky start activity and finish the game
+                Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+                timer.cancel();
+                // passing the int value
+                Bundle b = new Bundle();
+                b.putInt("score", score); // Your score
+                intent.putExtras(b); // Put your score to your next
+                startActivity(intent);
+                finish();
+            }else{
+                life--;
+            }
+            chance.setText("Chance : "+life);
         }
 
         if (questionID < 20) {          //최대 20문제인가봄(0~19 -> 20문제)
@@ -132,15 +163,14 @@ public class QuestionActivity extends Activity {
             currentQ = questionList.get(questionID);        //현재 질문에 질문리스트에서의 ID(번호) 가지고 오기
             setQuestionView();
         } else {
-            // if over do this
             timer.cancel();
+            // if over do this
             Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
             startActivity(intent);
             finish();
-
         }
 
     }
@@ -156,12 +186,6 @@ public class QuestionActivity extends Activity {
         @Override
         public void onFinish() {
             times.setText("Time is up");
-            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("score", score); // Your score
-            intent.putExtras(b); // Put your score to your next
-            startActivity(intent);
-            finish();
         }
 
         @Override
@@ -181,7 +205,6 @@ public class QuestionActivity extends Activity {
         }
 
     }
-
     private void setQuestionView() {        //문제 뷰
         // the method which will put all things together
         txtQuestion.setText(currentQ.getQUESTION());

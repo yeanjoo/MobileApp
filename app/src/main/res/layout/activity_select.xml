@@ -16,7 +16,6 @@
         android:text="사칙연산"
         android:textColor="#ffffff"
         android:textSize="20sp"/>
-
     <Button
         android:id="@+id/btn_tts"
         android:layout_width="wrap_content"
@@ -68,6 +67,5 @@
         android:text="로그아웃"
         android:textColor="#ffffff"
         android:textSize="20sp"/>
-
 
 </LinearLayout>

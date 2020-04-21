@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class ResultActivity extends Activity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +25,7 @@ public class ResultActivity extends Activity {
 
     public void playagain(View o) {
 //        setDatabaseRandoming();
-        Intent intent = new Intent(this, QuestionActivity.class);
+        Intent intent = new Intent(this, SelectQuestion.class);
         startActivity(intent);
     }
 }

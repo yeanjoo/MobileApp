@@ -3,6 +3,10 @@ package hitesh.asimplegame;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -13,17 +17,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 public class VoiceQuestionActivity extends Activity  {
 
-    final private String SUCCESS  ="축하합니다! 정답입니다";
-    final private String FAILED ="틀렸습니다 다시 시도해보세요~";
+//    final private String SUCCESS  ="축하합니다! 정답입니다";
+//    final private String FAILED ="틀렸습니다 다시 시도해보세요~";
+
+    final private int MAX = 4;
 
     private TextView result,quetitle;
     private String title="Question";
@@ -33,7 +40,12 @@ public class VoiceQuestionActivity extends Activity  {
     private int order =1;
     private List<VoiceQuestion> questionList;
     VoiceQuestion currentQ;
-
+    //효과음
+    private SoundPool soundPool;
+    int soundID;
+    int vol =1;
+    //setting
+    private SharedPreferences sf;
     //STT
     Intent intent;
     SpeechRecognizer speech;
@@ -42,6 +54,7 @@ public class VoiceQuestionActivity extends Activity  {
     private final Bundle params = new Bundle();
     private TextToSpeech tts;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
@@ -51,10 +64,15 @@ public class VoiceQuestionActivity extends Activity  {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
                     Manifest.permission.RECORD_AUDIO},PERMISSION);
         }
+        //setting
+        SharedPreferences sf = getSharedPreferences("settings",MODE_PRIVATE);
+        vol = sf.getInt("effect",1);
         //TITLE
         result = findViewById(R.id.stt_result);
         quetitle = findViewById(R.id.title);
-        //information.setText(information+String.valueOf(questionID+1));
+        //효과음
+        soundPool = new SoundPool.Builder().build();
+        soundID = soundPool.load(this,R.raw.button,1);
 
         //DB
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);
@@ -71,23 +89,25 @@ public class VoiceQuestionActivity extends Activity  {
     }
 
     public void answer(View o) { // 문제 답변
+        soundPool.play(soundID,vol,vol,0,0,0);
         speech.startListening(intent);
     }
 
     public void next(View o){
+        soundPool.play(soundID,vol,vol,0,0,0);
+
         if (currentQ.getANSWER().equals(answer)) score++;
 
         title = "Question  "+(order+questionID+1);//타이틀 번호 설정
 
-        if(questionID>3){
+        if(questionID>=MAX){
             Intent intent = new Intent(VoiceQuestionActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
             startActivity(intent);
             finish();
-        }
-        if(questionID<=3){
+        }else{
             questionID++;//다음 문제 넘어가기
             currentQ=questionList.get(questionID);
             quetitle.setText(title);
@@ -96,6 +116,7 @@ public class VoiceQuestionActivity extends Activity  {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void question(View o) { // 문제 출력
+        soundPool.play(soundID,vol,vol,0,0,0);
         speakTTS(currentQ.getQUESTION());
     }
 
@@ -181,11 +202,11 @@ public class VoiceQuestionActivity extends Activity  {
         public void onResults(Bundle bundle) {
             ArrayList<String> res = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             answer="";//초기화
-//            for (int i = 0; i < res.size(); i++) {
-//                answer += res.get(i);
-//            }
-            String temp = res.get(0);//결과가 붙어서 출력되서 일단 임시로 빼놓자
-            result.setText(temp);
+/*            for (int i = 0; i < res.size(); i++) {
+                answer += res.get(i);
+            }*/
+            answer = res.get(0);//결과가 붙어서 출력되서 일단은 앞만 인식
+            result.setText(answer);
         }
 
         @Override
