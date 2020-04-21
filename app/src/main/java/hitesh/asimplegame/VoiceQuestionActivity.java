@@ -28,6 +28,7 @@ public class VoiceQuestionActivity extends Activity  {
 
 //    final private String SUCCESS  ="축하합니다! 정답입니다";
 //    final private String FAILED ="틀렸습니다 다시 시도해보세요~";
+
     final private int MAX = 4;
 
     private TextView result,quetitle;
@@ -40,7 +41,7 @@ public class VoiceQuestionActivity extends Activity  {
     VoiceQuestion currentQ;
     //효과음
     private SoundPool soundPool;
-    SettingSound soundManager;
+    SoundManager soundManager;
     //STT
     Intent intent;
     SpeechRecognizer speech;
@@ -63,11 +64,12 @@ public class VoiceQuestionActivity extends Activity  {
         quetitle = findViewById(R.id.title);
         //효과음
         soundPool = new SoundPool.Builder().build();
-        soundManager = new SettingSound(this,soundPool);
+        soundManager = new SoundManager(this,soundPool);
         soundManager.addSound(0,R.raw.button);
-        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
-        int volume = b.getInt("volume");
-        soundManager.setVolume(0,volume);
+        //Bundle b = getIntent().getExtras();//getExtras() : 다른 activity에 데이터 전달
+        //int vol = b.getInt("volume");
+        //soundManager.setVolume(vol);
+
         //DB
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);
         questionList = db.getAllVoiceQuestions();  // this will fetch all quetonall questions

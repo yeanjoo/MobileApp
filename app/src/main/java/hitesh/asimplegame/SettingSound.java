@@ -30,34 +30,16 @@ public class SettingSound extends Activity {
     SharedPreferences.Editor BackEditor=null;
     private SharedPreferences EffectSF=null;
     SharedPreferences.Editor EffectEditor=null;
-    //효과음
-    private SoundPool mSoundPool;
-    private HashMap<Integer,Integer> mSoundPoolMap;
-    private AudioManager mAudioManager;
-    private Context mContext;
-    //===================효과음================//
-    public SettingSound(Context mContext,SoundPool mSoundPool){//생성자
-        this.mContext = mContext;
-        this.mSoundPool = mSoundPool;
-        mSoundPoolMap = new HashMap<Integer, Integer>();
-        mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
-    }
-    public void addSound(int index,int soundId){
-        mSoundPoolMap.put(index,mSoundPool.load(mContext,soundId,1));
-    }
-    public int playSound(int index){
-        int streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        return mSoundPool.play(mSoundPoolMap.get(index),streamVolume,streamVolume,1,0,1f);
-    }
-    public void setVolume(int index,int volume){
-        mSoundPool.setVolume(mSoundPoolMap.get(index),volume,volume);
-    }
+    Intent intent;
+    Bundle b;
+
     //=================배경음악==============//
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        intent = new Intent(getApplicationContext(),QuestionActivity.class);
         sound = findViewById(R.id.swt_sound);
         effect = findViewById(R.id.swt_effect);
         //===============상태저장=================//
@@ -65,7 +47,8 @@ public class SettingSound extends Activity {
         EffectSF = getSharedPreferences("isMute",MODE_PRIVATE);
         BackEditor = BackSF.edit();
         EffectEditor = EffectSF.edit();
-
+        //=====================넘길 상태 값===========================//
+        intent = new Intent(SettingSound.this, VoiceQuestionActivity.class);
         sound.setChecked(BackSF.getBoolean("isMute",true));
         effect.setChecked(EffectSF.getBoolean("isMute",true));
         //==================배경음악==============//
@@ -86,28 +69,23 @@ public class SettingSound extends Activity {
                 BackEditor.commit();
             }
         });
+        //=================================================//
         //====================효과음 버튼===================//
         effect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // 효과음 버튼 Listenr마다 넣어주기
             @Override //볼륨조절로 온오프하기
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-               Intent intent1 = new Intent(SettingSound.this, VoiceQuestionActivity.class);
-               Intent intent2 = new Intent(SettingSound.this, QuestionActivity.class);
-               Bundle b = new Bundle();
                 if(isChecked){
                     //soundPool.setVolume(soundPlay,0,0); //min
-                    b.putInt("volume", 0);
-                }else{
+                   // b.putInt("volume", 0);
+                } else{
                     //soundPool.setVolume(soundPlay,1,1);//max
-                    b.putInt("volume", 1); //volume 보내기
+                    //b.putInt("volume", 1); //volume 보내기
                 }
-                intent1.putExtras(b);
-                intent2.putExtras(b);
-
+                //intent.putExtras(b);
                 EffectEditor.putBoolean("isEffectMute",isChecked);
                 EffectEditor.commit(); //상태 유지 값 빼두 된다
             }
         });
     }
 
-//출처: https://everyshare.tistory.com/11 [에브리셰어]*/
 }

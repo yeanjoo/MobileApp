@@ -33,7 +33,7 @@ public class QuestionActivity extends Activity {
     private int questionID = 0;
     //효과음
     private SoundPool soundPool;
-    SettingSound soundManager;
+    SoundManager soundManager;
     private int index =0;
 
     private Question currentQ;
@@ -54,11 +54,8 @@ public class QuestionActivity extends Activity {
 //        db.setLevel(level);
         //=========================효과음============================//
         soundPool = new SoundPool.Builder().build();
-        soundManager = new SettingSound(this,soundPool);
+        soundManager = new SoundManager(this,soundPool);
         soundManager.addSound(0,R.raw.button);
-        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
-        int volume = b.getInt("volume");
-        soundManager.setVolume(0,volume);
         //=========================================================//
         questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
