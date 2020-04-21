@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-public class QuestionActivity extends Activity {
+public class InfinityActivity extends Activity {
     private static final String TAG = QuestionActivity.class.getSimpleName();       //getSimpleName() : 단순히 클래스 이름만을 가져옴
     private static int level;
 
@@ -43,8 +43,8 @@ public class QuestionActivity extends Activity {
     //목숨기능
     int life;
 
-//    private int level;
-CounterClass timer = new CounterClass(60000, 1000);
+    //    private int level;
+    CounterClass timer = new CounterClass(60000, 1000);
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -144,7 +144,7 @@ CounterClass timer = new CounterClass(60000, 1000);
         } else {
             if(life==1){
                 // if unlucky start activity and finish the game
-                Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+                Intent intent = new Intent(InfinityActivity.this, ResultActivity.class);
                 timer.cancel();
                 // passing the int value
                 Bundle b = new Bundle();
@@ -165,7 +165,7 @@ CounterClass timer = new CounterClass(60000, 1000);
         } else {
             timer.cancel();
             // if over do this
-            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+            Intent intent = new Intent(InfinityActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
@@ -186,7 +186,7 @@ CounterClass timer = new CounterClass(60000, 1000);
         @Override
         public void onFinish() {
             times.setText("Time is up");
-            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+            Intent intent = new Intent(InfinityActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); // Your score
             intent.putExtras(b); // Put your score to your next
