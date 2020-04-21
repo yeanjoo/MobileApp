@@ -52,11 +52,6 @@ public class InfinityActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);     //해당 layout 가져옴
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);  // my question bank class
-//        String level = getIntent().getStringExtra("level");
-//        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
-//        int level = b.getInt("level");
-//        db.setLevel(level);
-
 
         //=========================효과음============================//
         soundPool = new SoundPool.Builder().build();
