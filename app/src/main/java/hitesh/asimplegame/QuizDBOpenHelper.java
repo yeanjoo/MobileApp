@@ -14,13 +14,14 @@ import java.util.List;
 public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "QuizDBOpenHelper";
 
-//    private static int DATABASE_RANDOM = 1;
+    //private static int DATABASE_RANDOM = 1;
     private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
     private static final String TABLE_QUEST = "quest";
     private static final String TABLE_VOICE = "voicequest";
+
     // tasks Table Columns names
     private static final String KEY_ID = "qid";
     private static final String KEY_QUES = "question";
@@ -54,7 +55,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(voice_sql);
         addVoiceQuestion();
 //        addQuestion(levelActivity.getLevel());
-//        addQuestion();
+        addQuestion();
 //        db.close();
     }
 

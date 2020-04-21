@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -20,6 +22,8 @@ import androidx.core.app.ActivityCompat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 public class VoiceQuestionActivity extends Activity  {
 
 //    final private String SUCCESS  ="축하합니다! 정답입니다";
@@ -34,7 +38,9 @@ public class VoiceQuestionActivity extends Activity  {
     private int order =1;
     private List<VoiceQuestion> questionList;
     VoiceQuestion currentQ;
-
+    //효과음
+    private SoundPool soundPool;
+    SettingSound soundManager;
     //STT
     Intent intent;
     SpeechRecognizer speech;
@@ -43,10 +49,10 @@ public class VoiceQuestionActivity extends Activity  {
     private final Bundle params = new Bundle();
     private TextToSpeech tts;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
-
         //permission check
         if ( Build.VERSION.SDK_INT >= 23 ){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
@@ -55,8 +61,13 @@ public class VoiceQuestionActivity extends Activity  {
         //TITLE
         result = findViewById(R.id.stt_result);
         quetitle = findViewById(R.id.title);
-        //information.setText(information+String.valueOf(questionID+1));
-
+        //효과음
+        soundPool = new SoundPool.Builder().build();
+        soundManager = new SettingSound(this,soundPool);
+        soundManager.addSound(0,R.raw.button);
+        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
+        int volume = b.getInt("volume");
+        soundManager.setVolume(0,volume);
         //DB
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);
         questionList = db.getAllVoiceQuestions();  // this will fetch all quetonall questions
@@ -72,10 +83,12 @@ public class VoiceQuestionActivity extends Activity  {
     }
 
     public void answer(View o) { // 문제 답변
+        soundManager.playSound(0);
         speech.startListening(intent);
     }
 
     public void next(View o){
+        soundManager.playSound(0);
         if (currentQ.getANSWER().equals(answer)) score++;
 
         title = "Question  "+(order+questionID+1);//타이틀 번호 설정
@@ -87,8 +100,7 @@ public class VoiceQuestionActivity extends Activity  {
             intent.putExtras(b); // Put your score to your next
             startActivity(intent);
             finish();
-        }
-        if(questionID<MAX){
+        }else{
             questionID++;//다음 문제 넘어가기
             currentQ=questionList.get(questionID);
             quetitle.setText(title);
@@ -97,6 +109,7 @@ public class VoiceQuestionActivity extends Activity  {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void question(View o) { // 문제 출력
+        soundManager.playSound(0);
         speakTTS(currentQ.getQUESTION());
     }
 

@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 
 public class QuestionActivity extends Activity {
@@ -28,6 +31,10 @@ public class QuestionActivity extends Activity {
     private List<Question> questionList;
     private int score = 0;
     private int questionID = 0;
+    //효과음
+    private SoundPool soundPool;
+    SettingSound soundManager;
+    private int index =0;
 
     private Question currentQ;
     private TextView txtQuestion, times, scored;
@@ -35,6 +42,7 @@ public class QuestionActivity extends Activity {
 
 //    private int level;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,14 @@ public class QuestionActivity extends Activity {
 //        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
 //        int level = b.getInt("level");
 //        db.setLevel(level);
+        //=========================효과음============================//
+        soundPool = new SoundPool.Builder().build();
+        soundManager = new SettingSound(this,soundPool);
+        soundManager.addSound(0,R.raw.button);
+        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
+        int volume = b.getInt("volume");
+        soundManager.setVolume(0,volume);
+        //=========================================================//
         questionList = db.getAllQuestions(level);  // this will fetch all quetonall questions
         currentQ = questionList.get(questionID); // the current question
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
@@ -74,6 +90,7 @@ public class QuestionActivity extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundManager.playSound(index);//효과음 재생
                 // passing the button text to other method
                 // to check whether the anser is correct or not
                 // same for all three buttons
@@ -84,6 +101,7 @@ public class QuestionActivity extends Activity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundManager.playSound(index);//효과음 재생
                 getAnswer(button2.getText().toString());
             }
         });
@@ -91,6 +109,7 @@ public class QuestionActivity extends Activity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundManager.playSound(index);//효과음 재생
                 getAnswer(button3.getText().toString());
             }
 
@@ -171,7 +190,6 @@ public class QuestionActivity extends Activity {
         }
 
     }
-
     private void setQuestionView() {        //문제 뷰
         // the method which will put all things together
         txtQuestion.setText(currentQ.getQUESTION());
