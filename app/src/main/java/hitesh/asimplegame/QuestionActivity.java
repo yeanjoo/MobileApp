@@ -40,6 +40,7 @@ public class QuestionActivity extends Activity {
     private Question currentQ;
     private TextView txtQuestion, times, scored,chance;
     private Button button1, button2, button3;
+
     //목숨기능
     int life;
 
