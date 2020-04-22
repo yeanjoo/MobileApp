@@ -39,6 +39,10 @@ public class Settings extends Activity {
         //===============상태저장=================//
         sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
+        //===============상태 반영================//
+        if(sharedPref.getInt("lifeMode",1)==3) life.setChecked(true); //초기 설정 값과 다르다면
+        if(sharedPref.getInt("effect",0)==0) effect.setChecked(false);
+        bgm.setChecked(sharedPref.getBoolean("bgm",false));
         //==================배경음악==============//
         if (mp == null) {
             mp = MediaPlayer.create(this, R.raw.background);
@@ -49,10 +53,10 @@ public class Settings extends Activity {
     public void bgm(View o) {
         if (bgm.isChecked()) {
             mp.start();
-            editor.putBoolean("bgm", false);
+            editor.putBoolean("bgm", true);
         }else if(mp.isPlaying()){
             mp.pause();
-            editor.putBoolean("bgm", true);
+            editor.putBoolean("bgm", false);
         }
         editor.commit();
     }
