@@ -76,7 +76,6 @@ public class QuestionActivity extends Activity {
         vol = sf.getInt("effect",1);
         chance = findViewById(R.id.chance);
         //========================모드 결정=========================//
-        Toast.makeText(getApplicationContext(), "life : " + life, Toast.LENGTH_SHORT).show();
 
         if(sf.getBoolean("lifeMode",false)){
             life = 3;//목숨 3개
@@ -91,6 +90,8 @@ public class QuestionActivity extends Activity {
             isLifeMode = false;
             chance.setText(" ");
         }
+
+//        Toast.makeText(getApplicationContext(), "inifMode : " + sf.getBoolean("inifMode",false), Toast.LENGTH_SHORT).show();
 
         // the textview in which score will be displayed
         scored = (TextView) findViewById(R.id.score);
@@ -232,6 +233,4 @@ public class QuestionActivity extends Activity {
 
         questionID++;
     }
-
-
 }
