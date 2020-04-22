@@ -81,7 +81,7 @@ public class Settings extends Activity {
         editor.commit();
     }
     public void inifMode(View o) {
-        if (life.isChecked()) {
+        if (inif.isChecked()) {
             editor.putBoolean("inifMode", true);
             editor.putBoolean("lifeMode",false);//무한 모드일 경우 자동으로 목숨모드 OFF
             life.setChecked(false);
