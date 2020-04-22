@@ -29,7 +29,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPTA = "opta";
     private static final String KEY_OPTB = "optb";
     private static final String KEY_OPTC = "optc";
-    private static int size = 5;
 
     private SQLiteDatabase database;
 
@@ -37,14 +36,6 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
     public QuizDBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    public static void setSize(int i) {
-        size = i;
-    }
-
-    public static int getSize() {
-        return size;
     }
 
     @Override
@@ -69,7 +60,7 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     }
 
     private void addQuestion() {
-        for (int i = 0;i<getSize(); i++) {
+        for (int i = 0;i<20; i++) {
             int questNumA = (int) (Math.random() * 10);
             int questNumB = (int) (Math.random() * 10);
             int questAnswer = 0;
@@ -166,12 +157,21 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                     question = new Question(questionString, String.valueOf(optA), String.valueOf(optB), String.valueOf(optC), String.valueOf(questAnswer));
                     addQuestion(question);
                     break;
+//                case 3:
+//                    break;
                 default:
                     break;
             }
         }
     }
-
+//    public static void setDatabaseRandoming(){
+//        if(DATABASE_RANDOM<=1){
+//            DATABASE_RANDOM=2;
+//        }
+//        else{
+//            DATABASE_RANDOM=1;
+//        }
+//    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {      //이건 사용을 안하는데?
@@ -316,6 +316,51 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         return quesList;
     }
+    /*    private void addQuestion() {
+        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
+        addQuestion(q1);
+        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
+        addQuestion(q2);
+        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
+        addQuestion(q3);
+        Question q4 = new Question("5+7 = ?", "12", "13", "14", "12");
+        addQuestion(q4);
+        Question q5 = new Question("3-1 = ?", "1", "3", "2", "2");
+        addQuestion(q5);
+        Question q6 = new Question("0+1 = ?", "1", "0", "10", "1");
+        addQuestion(q6);
+        Question q7 = new Question("9-9 = ?", "0", "9", "1", "0");
+        addQuestion(q7);
+        Question q8 = new Question("3+6 = ?", "8", "7", "9", "9");
+        addQuestion(q8);
+        Question q9 = new Question("1+5 = ?", "6", "7", "5", "6");
+        addQuestion(q9);
+        Question q10 = new Question("7-5 = ?", "3", "2", "6", "2");
+        addQuestion(q10);
+        Question q11 = new Question("7-2 = ?", "7", "6", "5", "5");
+        addQuestion(q11);
+        Question q12 = new Question("3+5 = ?", "8", "7", "5", "8");
+        addQuestion(q12);
+        Question q13 = new Question("0+6 = ?", "7", "6", "5", "6");
+        addQuestion(q13);
+        Question q14 = new Question("12-10 = ?", "1", "2", "3", "2");
+        addQuestion(q14);
+        Question q15 = new Question("12+2 = ?", "14", "15", "16", "14");
+        addQuestion(q15);
+        Question q16 = new Question("2-1 = ?", "2", "1", "0", "1");
+        addQuestion(q16);
+        Question q17 = new Question("6-6 = ?", "6", "12", "0", "0");
+        addQuestion(q17);
+        Question q18 = new Question("5-1 = ?", "4", "3", "2", "4");
+        addQuestion(q18);
+        Question q19 = new Question("4+2 = ?", "6", "7", "5", "6");
+        addQuestion(q19);
+        Question q20 = new Question("5+1 = ?", "6", "7", "5", "6");
+        addQuestion(q20);
+        Question q21 = new Question("5-4 = ?", "5", "4", "1", "1");
+        addQuestion(q21);
+    }*/
+
 
 
 }

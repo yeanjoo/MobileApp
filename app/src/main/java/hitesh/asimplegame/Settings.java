@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi;
 
 /*처음에 볼륨키를 넣었는데 굳이 필요 없을 것 같아서 그냥 지우고 ON/OFF만 넣었습니다*/
 /*MediaPlayer는 배경음악 처리 soundPool은 효과음 처리입니다*/
-//일단 볼륨을 int로 보내고 2차때 객체를 넘기는 refactoring
 
 public class Settings extends Activity {
     private static MediaPlayer mp;
@@ -26,7 +25,7 @@ public class Settings extends Activity {
 
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor = null;
-    Switch life, effect, bgm;
+    Switch life, effect, bgm; //모드 추가하려면 더 해도..
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -39,20 +38,23 @@ public class Settings extends Activity {
         //===============상태저장=================//
         sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
+        //===============상태 반영================//
+        if(sharedPref.getInt("lifeMode",1)==3) life.setChecked(true); //초기 설정 값과 다르다면
+        if(sharedPref.getInt("effect",0)==0) effect.setChecked(false);
+        bgm.setChecked(sharedPref.getBoolean("bgm",false));
         //==================배경음악==============//
         if (mp == null) {
             mp = MediaPlayer.create(this, R.raw.background);
             mp.setLooping(true);
         }
     }
-
     public void bgm(View o) {
         if (bgm.isChecked()) {
             mp.start();
-            editor.putBoolean("bgm", false);
+            editor.putBoolean("bgm", true);
         }else if(mp.isPlaying()){
             mp.pause();
-            editor.putBoolean("bgm", true);
+            editor.putBoolean("bgm", false);
         }
         editor.commit();
     }
