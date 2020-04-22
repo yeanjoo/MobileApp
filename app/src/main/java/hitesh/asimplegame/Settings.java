@@ -25,7 +25,7 @@ public class Settings extends Activity {
 
     SharedPreferences sharedPref = null;
     SharedPreferences.Editor editor = null;
-    Switch life, effect, bgm;
+    Switch life, effect, bgm; //모드 추가하려면 더 해도..
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -48,7 +48,6 @@ public class Settings extends Activity {
             mp.setLooping(true);
         }
     }
-
     public void bgm(View o) {
         if (bgm.isChecked()) {
             mp.start();
