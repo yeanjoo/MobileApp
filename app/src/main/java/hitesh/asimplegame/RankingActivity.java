@@ -42,7 +42,7 @@ public class RankingActivity extends Activity {
 
         for (int i = 0; i < size; i++) {
             Score score = scoreList.get(i);
-            adapter.addItem(i,score.getUser(), score.getScore());
+            adapter.addItem(i+1,score.getUser(), score.getScore());
         }
         //board.setText(message);
     }

@@ -47,7 +47,7 @@ public class ListViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         titleTextView.setText(listViewItem.getUser());
         descTextView.setText("SCORE : "+String.valueOf(listViewItem.getScore()));
-        rankingView.setText(String.valueOf(listViewItem.getOrder()));
+        rankingView.setText(String.valueOf(listViewItem.getOrder())+"위");
 
         return convertView;
     }
