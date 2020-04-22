@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi;
 
 /*처음에 볼륨키를 넣었는데 굳이 필요 없을 것 같아서 그냥 지우고 ON/OFF만 넣었습니다*/
 /*MediaPlayer는 배경음악 처리 soundPool은 효과음 처리입니다*/
-//일단 볼륨을 int로 보내고 2차때 객체를 넘기는 refactoring
 
 public class Settings extends Activity {
     private static MediaPlayer mp;
