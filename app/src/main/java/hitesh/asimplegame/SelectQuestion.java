@@ -60,18 +60,16 @@ public class SelectQuestion extends Activity {
         startActivity(intent);
     }
 
-    public void infinity(View o) {
-        soundPool.play(soundID, sf.getInt("effect", 1), sf.getInt("effect", 1), 0, 0, 0);//빠른 업데이트를 위해....
-        Intent intent = new Intent(this, LevelActivity.class);
-        b.putInt("mode", 2);
-        intent.putExtras(b);
-        startActivity(intent);
-    }
-
     public void setting(View o) {
         soundPool.play(soundID, sf.getInt("effect", 1), sf.getInt("effect", 1), 0, 0, 0);
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
+    }
+    public void ranking(View o){
+        soundPool.play(soundID, sf.getInt("effect", 1), sf.getInt("effect", 1), 0, 0, 0);
+        Intent intent = new Intent(this, RankingActivity.class);
+        startActivity(intent);
+
     }
 
 }

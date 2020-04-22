@@ -1,6 +1,8 @@
 package hitesh.asimplegame;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +25,20 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
+    //임시 저장 값
+    SharedPreferences sharedPref = null;
+    SharedPreferences.Editor editor = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         firebaseAuth = FirebaseAuth.getInstance();
+
+        sharedPref = getSharedPreferences("USER", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         loginEmailId = findViewById(R.id.loginEmail);
         logInpasswd = findViewById(R.id.loginpaswd);
         btnLogIn = findViewById(R.id.btnLogIn);
@@ -55,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userEmail = loginEmailId.getText().toString();
+                final String userEmail = loginEmailId.getText().toString();
                 String userPaswd = logInpasswd.getText().toString();
                 if (userEmail.isEmpty()) {
                     loginEmailId.setError("Provide your Email first!");
@@ -72,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Not sucessfull", Toast.LENGTH_SHORT).show();
                             } else {
+                                editor.putString("id",userEmail);
+                                editor.commit();
                                 startActivity(new Intent(LoginActivity.this, SelectQuestion.class));
                             }
                         }
