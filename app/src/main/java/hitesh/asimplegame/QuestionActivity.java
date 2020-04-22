@@ -28,6 +28,8 @@ public class QuestionActivity extends Activity {
     private static final String TAG = QuestionActivity.class.getSimpleName();       //getSimpleName() : 단순히 클래스 이름만을 가져옴
     private static int level;
 
+    final private int INF = 99999;
+
     private List<Question> questionList;
     private int score = 0;
     private int questionID = 0;
@@ -40,10 +42,13 @@ public class QuestionActivity extends Activity {
     private Question currentQ;
     private TextView txtQuestion, times, scored,chance;
     private Button button1, button2, button3;
-    //목숨기능
-    int life;
 
-//    private int level;
+    //모드
+    int life;//목숨기능
+    boolean isLifeMode = true; //라이프모드인지
+
+    //    private int level;
+    CounterClass timer = new CounterClass(60000, 1000);
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -51,11 +56,6 @@ public class QuestionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);     //해당 layout 가져옴
         QuizDBOpenHelper db = new QuizDBOpenHelper(this);  // my question bank class
-//        String level = getIntent().getStringExtra("level");
-//        Bundle b = getIntent().getExtras();		//getExtras() : 다른 activity에 데이터 전달
-//        int level = b.getInt("level");
-//        db.setLevel(level);
-
 
         //=========================효과음============================//
         soundPool = new SoundPool.Builder().build();
@@ -74,10 +74,24 @@ public class QuestionActivity extends Activity {
         //========================세팅 값============================//
         sf = getSharedPreferences("settings",MODE_PRIVATE);
         vol = sf.getInt("effect",1);
-        life = sf.getInt("lifeMode",1);
         chance = findViewById(R.id.chance);
-        if(life==1) chance.setText(" "); // 적용
-        Toast.makeText(getApplicationContext(), "vol : " + vol, Toast.LENGTH_SHORT).show();
+        //========================모드 결정=========================//
+        Toast.makeText(getApplicationContext(), "life : " + life, Toast.LENGTH_SHORT).show();
+
+        if(sf.getBoolean("lifeMode",false)){
+            life = 3;//목숨 3개
+            chance.setText("Chance: "+ life); // 적용
+            isLifeMode = true;
+        }else if(sf.getBoolean("inifMode",false)){
+            life = INF;
+            chance.setText("무한대");
+            isLifeMode =false;
+        }else{
+            life = 1;
+            isLifeMode = false;
+            chance.setText(" ");
+        }
+
         // the textview in which score will be displayed
         scored = (TextView) findViewById(R.id.score);
 
@@ -90,9 +104,7 @@ public class QuestionActivity extends Activity {
         times.setText("00:02:00");      //이건 왜 설정한거지?   //초기 설정 1분으로 되어있음
 
         // A timer of 60 seconds to play for, with an interval of 1 second (1000 milliseconds)
-        CounterClass timer = new CounterClass(60000, 1000);
         timer.start();
-
         // button click listeners
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,11 +154,10 @@ public class QuestionActivity extends Activity {
             score++;        //score 0인데 왜 화면에는 1로 시작?           //정답일때 스코어가 올라가는데 왜 처음이 1인가?
             scored.setText("Score : " + score);
         } else {
-
-            if(life==1){
+            if(life<=1){
                 // if unlucky start activity and finish the game
                 Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
-
+                timer.cancel();
                 // passing the int value
                 Bundle b = new Bundle();
                 b.putInt("score", score); // Your score
@@ -156,14 +167,15 @@ public class QuestionActivity extends Activity {
             }else{
                 life--;
             }
-            chance.setText("Chance : "+life);
+            if(isLifeMode ==true) chance.setText("Chance : "+life); //목숨 모드일 때
         }
 
-        if (questionID < 20) {          //최대 20문제인가봄(0~19 -> 20문제)
+        if (questionID < QuizDBOpenHelper.getSize()) {          //최대 20문제인가봄(0~19 -> 20문제)
             // if questions are not over then do this
             currentQ = questionList.get(questionID);        //현재 질문에 질문리스트에서의 ID(번호) 가지고 오기
             setQuestionView();
         } else {
+            timer.cancel();
             // if over do this
             Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
@@ -186,6 +198,12 @@ public class QuestionActivity extends Activity {
         @Override
         public void onFinish() {
             times.setText("Time is up");
+            Intent intent = new Intent(QuestionActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("score", score); // Your score
+            intent.putExtras(b); // Put your score to your next
+            startActivity(intent);
+            finish();
         }
 
         @Override
