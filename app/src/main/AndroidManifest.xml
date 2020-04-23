@@ -19,6 +19,7 @@
         </activity>
 
         <activity android:name=".QuestionActivity"/>
+        <activity android:name=".RankingActivity"/>
         <activity android:name=".LevelActivity"/>
         <activity
             android:name=".ResultActivity"

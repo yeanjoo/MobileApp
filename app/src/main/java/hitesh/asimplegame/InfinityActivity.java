@@ -216,5 +216,4 @@ public class InfinityActivity extends Activity {
         questionID++;
     }
 
-
 }

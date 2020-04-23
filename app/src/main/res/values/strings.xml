@@ -19,4 +19,5 @@
     <string name="setting_life">목숨모드</string>
     <string name="setting_inif">무한모드</string>
     <string name="voice_example">여기에 음성이 표시됩니다!</string>
+    <string name="appbar_scrolling_view_behavior" />
 </resources>
