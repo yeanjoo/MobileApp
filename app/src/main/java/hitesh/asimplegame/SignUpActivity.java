@@ -1,7 +1,12 @@
 package hitesh.asimplegame;
 
+<<<<<<< Updated upstream
 import android.app.Activity;
+=======
+import android.content.Context;
+>>>>>>> Stashed changes
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +23,14 @@ public class SignUpActivity extends Activity {
     private String name;
     private String password;
 
+    SharedPreferences sharedPref = null;
+    SharedPreferences.Editor editor = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+<<<<<<< Updated upstream
         final UserDBOpenHelper db = new UserDBOpenHelper(this);
 
         SignUp = (Button) findViewById(R.id.submit);
@@ -44,6 +53,48 @@ public class SignUpActivity extends Activity {
                     db.addUser(CurUser);
                    Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);//다음페이지
                     startActivity(intent);
+=======
+        firebaseAuth = FirebaseAuth.getInstance();
+        emailId = findViewById(R.id.ETemail);
+        passwd = findViewById(R.id.ETpassword);
+        btnSignUp = findViewById(R.id.btnSignUp);
+        signIn = findViewById(R.id.TVSignIn);
+
+        sharedPref = getSharedPreferences("USER", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String emailID = emailId.getText().toString();
+                String paswd = passwd.getText().toString();
+                if (emailID.isEmpty()) {
+                    emailId.setError("Provide your Email first!");
+                    emailId.requestFocus();
+                } else if (paswd.isEmpty()) {
+                    passwd.setError("Set your password");
+                    passwd.requestFocus();
+                } else if (emailID.isEmpty() && paswd.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Fields Empty!", Toast.LENGTH_SHORT).show();
+                } else if (!(emailID.isEmpty() && paswd.isEmpty())) {
+                    firebaseAuth.createUserWithEmailAndPassword(emailID, paswd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this.getApplicationContext(),
+                                        "SignUp unsuccessful: " + task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                editor.putString("id",emailID);
+                                editor.commit();
+                                startActivity(new Intent(SignUpActivity.this, SelectQuestion.class));
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_SHORT).show();
+>>>>>>> Stashed changes
                 }
             }
         });

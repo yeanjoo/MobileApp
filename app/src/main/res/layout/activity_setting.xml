@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Switch
+        android:id="@+id/btn_bgm"
+        android:onClick="bgm"
+        android:checked="false"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:text="@string/setting_back" />
+
+    <Switch
+        android:id="@+id/btn_effect"
+        android:onClick="effect"
+        android:checked="true"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="@string/setting_effect" />
+
+    <Switch
+        android:id="@+id/btn_life"
+        android:onClick="lifeMode"
+        android:checked="false"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="@string/setting_life" />
+
+    <Switch
+        android:id="@+id/btn_inif"
+        android:onClick="inifMode"
+        android:checked="false"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="@string/setting_inif" />
+
+</LinearLayout>

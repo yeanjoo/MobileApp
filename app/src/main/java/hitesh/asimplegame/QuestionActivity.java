@@ -4,10 +4,13 @@ package hitesh.asimplegame;
  * Created by H on 7/12/2015.
  */
 
+<<<<<<< Updated upstream
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+=======
+>>>>>>> Stashed changes
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -20,6 +23,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+<<<<<<< Updated upstream
+=======
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+>>>>>>> Stashed changes
 
 public class QuestionActivity extends Activity {
     private static final String TAG = QuestionActivity.class.getSimpleName();       //getSimpleName() : 단순히 클래스 이름만을 가져옴
@@ -35,6 +43,12 @@ public class QuestionActivity extends Activity {
 
 //    private int level;
 
+<<<<<<< Updated upstream
+=======
+    //    private int level;
+    CounterClass timer = new CounterClass(60000, 1000);
+
+>>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +68,30 @@ public class QuestionActivity extends Activity {
         button1 = (Button) findViewById(R.id.button1);          //정답 보기
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
+<<<<<<< Updated upstream
+=======
+        //========================세팅 값============================//
+        sf = getSharedPreferences("settings",MODE_PRIVATE);
+        vol = sf.getInt("effect",1);
+        chance = findViewById(R.id.chance);
+        //========================모드 결정=========================//
+
+        if(sf.getBoolean("lifeMode",false)){
+            life = 3;//목숨 3개
+            chance.setText("Chance: "+ life); // 적용
+            isLifeMode = true;
+        }else if(sf.getBoolean("inifMode",false)){
+            life = INF;
+            chance.setText("무한대");
+            isLifeMode =false;
+        }else{
+            life = 1;
+            isLifeMode = false;
+            chance.setText(" ");
+        }
+>>>>>>> Stashed changes
+
+//        Toast.makeText(getApplicationContext(), "inifMode : " + sf.getBoolean("inifMode",false), Toast.LENGTH_SHORT).show();
 
         // the textview in which score will be displayed
         scored = (TextView) findViewById(R.id.score);
@@ -180,6 +218,10 @@ public class QuestionActivity extends Activity {
 
         questionID++;
     }
+<<<<<<< Updated upstream
 
 
 }
+=======
+}
+>>>>>>> Stashed changes

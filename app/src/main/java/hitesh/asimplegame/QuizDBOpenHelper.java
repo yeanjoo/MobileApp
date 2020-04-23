@@ -23,6 +23,12 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mathsone";
     // tasks table name
     private static final String TABLE_QUEST = "quest";
+<<<<<<< Updated upstream
+=======
+    private static final String TABLE_VOICE = "voicequest";
+    private static final String TABLE_SCORE = "score";
+
+>>>>>>> Stashed changes
     // tasks Table Columns names
     private static final String KEY_ID = "qid";
     private static final String KEY_QUES = "question";
@@ -30,7 +36,12 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPTA = "opta";
     private static final String KEY_OPTB = "optb";
     private static final String KEY_OPTC = "optc";
+<<<<<<< Updated upstream
 
+=======
+    private static final String KEY_SCORE = "keyScore";
+    private static int size = 5;
+>>>>>>> Stashed changes
 
     private SQLiteDatabase database;
 
@@ -47,10 +58,31 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
                 + " TEXT, " + KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
                 + KEY_OPTB + " TEXT, " + KEY_OPTC + " TEXT)";
+<<<<<<< Updated upstream
         db.execSQL(sql);
 //        addQuestion(levelActivity.getLevel());
         addQuestion();
         // db.close();
+=======
+
+        String voice_sql = "CREATE TABLE IF NOT EXISTS " + TABLE_VOICE + " ( "
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QUES
+                + " TEXT, " + KEY_ANSWER + " TEXT )";
+
+        String score_sql = "CREATE TABLE IF NOT EXISTS " + TABLE_SCORE + " ( "
+                + KEY_ID + " TEXT, " + KEY_SCORE + " INTEGER " + " )";
+
+        db.execSQL(sql);
+        db.execSQL(voice_sql);
+        db.execSQL(score_sql);
+        //초기화 함수
+        addVoiceQuestion();
+        addQuestion();
+        addScore();
+//        db.close();
+        //        addQuestion(levelActivity.getLevel());
+
+>>>>>>> Stashed changes
     }
 
 /*    private void addQuestion() {
@@ -232,25 +264,102 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
     // Adding new question
     public void addQuestion(Question quest) {
-        // SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
         values.put(KEY_QUES, quest.getQUESTION());
         values.put(KEY_ANSWER, quest.getANSWER());
         values.put(KEY_OPTA, quest.getOPTA());
         values.put(KEY_OPTB, quest.getOPTB());
         values.put(KEY_OPTC, quest.getOPTC());
-
         // Inserting Row
         database.insert(TABLE_QUEST, null, values);
     }
 
+<<<<<<< Updated upstream
     public int getLevel(){
         return level;
     }
 
     public void setLevel(int lv){
         level = lv;
+=======
+    //<===========VOICE 문제 관련 DB처리 (SQLITE)======================
+    //생성자
+    private void addVoiceQuestion() {
+        VoiceQuestion v1 = new VoiceQuestion("4 더하기 5 빼기 3은 무엇일까요?", "6");
+        VoiceQuestion v2 = new VoiceQuestion("3 곱하기 7 더하기 3은 무엇일까요?", "24");
+        VoiceQuestion v3 = new VoiceQuestion("15 빼기 4 곱하기 3은 무엇일까요?", "3");
+        VoiceQuestion v4 = new VoiceQuestion("4 나누기 2 더하기 5은 무엇일까요?", "7");
+        VoiceQuestion v5 = new VoiceQuestion("5더하기 5은 무엇일까요?", "10");
+        addVoiceQuestion(v1);
+        addVoiceQuestion(v2);
+        addVoiceQuestion(v3);
+        addVoiceQuestion(v4);
+        addVoiceQuestion(v5);
     }
+
+    //DB 적용
+    public void addVoiceQuestion(VoiceQuestion quest) {
+        ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
+        values.put(KEY_QUES, quest.getQUESTION());
+        values.put(KEY_ANSWER, quest.getANSWER());
+        // Inserting Row
+        database.insert(TABLE_VOICE, null, values);
+    }
+
+    //voice 문제 반환 (sqlite)
+    public List<VoiceQuestion> getAllVoiceQuestions() {
+        List<VoiceQuestion> quesList = new ArrayList<VoiceQuestion>();
+        String selectQuery = "SELECT  * FROM " + TABLE_VOICE;
+
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                VoiceQuestion question = new VoiceQuestion();
+                question.setID(cursor.getInt(0));
+                question.setQUESTION(cursor.getString(1));
+                question.setANSWER(cursor.getString(2));
+
+                quesList.add(question);
+            } while (cursor.moveToNext());
+        }
+        return quesList;
+    }
+    //<========================= 스코어 저장=========================
+    public List<Score> getAllScore() {
+        List<Score> quesList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_SCORE +" ORDER BY "+KEY_SCORE+" DESC"; //내림차순정렬
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Score score = new Score();
+                score.setUser(cursor.getString(0));
+                score.setScore(cursor.getInt(1));
+                quesList.add(score);
+            } while (cursor.moveToNext());
+        }
+        return quesList;
+    }
+    private void addScore(){
+        Score score = new Score("민트초코 존맛탱",10);
+        addScore(score);
+        Score score1 = new Score("파인애플피자 존맛탱",9);
+        addScore(score1);
+    }
+
+    public void addScore(Score score) {
+        ContentValues values = new ContentValues();     //ContentResolver가 처리 할 수 있는 값 집합을 저장
+        values.put(KEY_ID, score.getUser());
+        values.put(KEY_SCORE, score.getScore());
+        // Inserting Row
+        database.insert(TABLE_SCORE, null, values); //외부 클래스에서 직접 사용시 ERROR, 객체 생성 후 사용
+>>>>>>> Stashed changes
+    }
+    //========================================================================>//
 
     public List<Question> getAllQuestions(int lv) {
 //        getLevel();
@@ -274,7 +383,16 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
                 quesList.add(quest);
             } while (cursor.moveToNext());      //moveToNext : 순서상으로 다음 행 선택
         }
+<<<<<<< Updated upstream
 
+=======
+        setLevel(0);
+        checkFile();
+        return quesList;
+    }
+
+    public void checkFile() {//왜 있는지 몰라서 따로 빼놓음
+>>>>>>> Stashed changes
         String databasePath = "/data/user/0/hitesh.asimplegame/databases";
         File mFile = new File(databasePath);
         if (mFile.exists()) {
@@ -299,6 +417,30 @@ public class QuizDBOpenHelper extends SQLiteOpenHelper {
 
         return quesList;
     }
+<<<<<<< Updated upstream
 
 
+=======
+    //외부 write를 위한 get method 필요거 아래로 추가
+    public String getDatabaseName() {
+        return DATABASE_NAME;
+    }
+    public String getTableScore() {
+        return TABLE_SCORE;
+    }
+    public String getKeyId(){
+        return KEY_ID;
+    }
+    public String getKeyScore(){
+        return KEY_SCORE;
+    }
+    //======================//
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int lv) {
+        level = lv;
+    }
+>>>>>>> Stashed changes
 }

@@ -1,21 +1,38 @@
 package hitesh.asimplegame;
 
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< Updated upstream
 import android.nfc.Tag;
+=======
+import android.content.SharedPreferences;
+import android.media.SoundPool;
+import android.os.Build;
+>>>>>>> Stashed changes
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 
 public class LevelActivity extends Activity implements View.OnClickListener {
 
+<<<<<<< Updated upstream
 //    int level=0;
 
 
 
+=======
+    //    int level=0;
+    private SoundPool soundPool;
+    private int soundID;
+    private int vol;//볼륨, 추후 수정
+    private SharedPreferences sf;
+    int mode;
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+>>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
